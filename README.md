@@ -1,6 +1,6 @@
 ![./.drawio/app-icon.svg](./.drawio/app-icon.svg)
 
-## Idea
+## PILA - Idea
 In this Flutter game you have to stack different tetris forms to match a given pattern of numbers. 
 
 
