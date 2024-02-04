@@ -24,5 +24,24 @@ Mehanics to implement:
 ### Concept
 The following diagram shows the first basic concept for designing the app and different screens. 
 
+Notes to `Play`:
+- `Continue`: The player can continue with the game / level.
+
+Notes to `Tutorial`:
+- `How to play`: The player can learn the basics with 1 to 3 levels which explain the mechanics and rules and how to play the game.
+
+Notes to `Settings`:
+- `Dark Mode / Colours`: The player can select between dark mode and light mode, as well as color settings for color blindness.
+- `Difficulty`: 
+  - `easy`: Single fields of each element do have different values (not just 1), this simplifies the game due to easier identifiable positions.
+  - `classic`: All single fiels of each element do have the value 1.
+- `Field Size`:
+  - The player can choose between 4x4, 5x5 or 6x6 field size.
+
+Notes to `About`:
+- `Version`: Version of the game (e.g. `MAJOR.MINOR.PATCH` version)
+- `Impressum and Contact`: Contact information about the game developer.
+- `Support`: The player can make a voluntary financial contribution to the development of the game 
+
 ![./.drawio/app-concept.svg](./.drawio/app-concept.svg)
 
