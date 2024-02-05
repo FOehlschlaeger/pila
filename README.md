@@ -1,9 +1,13 @@
 ![./.drawio/app-icon.svg](./.drawio/app-icon.svg)
 
-## PILA - Idea
-In this Flutter game you have to stack different tetris forms to match a given pattern of numbers. 
+## PILA
+In this [Flutter](https://flutter.dev/) game you have to stack different tetris forms to match a given pattern of numbers, or to reduce stacks of numbers to flatten all fields to zero to finish the level. 
 
 This cross-platform app is developed for Android and iOS devices.
+
+_Naming_
+
+_The name "PILA" originates form spanish and can be translated with "stack" or "pile". It corresponds to the number stacks which have to be flattened by the users to finish the level._
 
 ### Concept
 The following diagram shows the first basic concept for designing the app and different screens. 
@@ -36,7 +40,7 @@ This game is developed using [Flutter](https://flutter.dev/).
 - [ ] Next, the `How to play` should provide the first playable levels, which are available in the `Play` screen
 - [ ] Finally, the `Play` screen loads the first level for the users to play
 
-Mehanics to implement:
+Mechanics to implement:
 - [ ] Define the square game field
 - [ ] Implement the seven element forms to keep also their shape after rotation
 - [ ] Implement the summation of each number stack
