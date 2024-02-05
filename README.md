@@ -7,7 +7,7 @@ This cross-platform app is developed for Android and iOS devices.
 
 _Naming_
 
-_The name "PILA" originates form spanish and can be translated with "stack" or "pile". It corresponds to the number stacks which have to be flattened by the users to finish the level._
+_The name "PILA" originates from spanish and refers to "stack" or "pile", which corresponds to the number stacks which have to be flattened by the players to finish the level successfully._
 
 ### Concept
 The following diagram shows the first basic concept for designing the app and different screens. 
