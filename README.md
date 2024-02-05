@@ -28,7 +28,7 @@ Notes to `Settings`:
 
 Notes to `About`:
 - `Version`: Version of the game (e.g. `MAJOR.MINOR.PATCH` version)
-- `Impressum and Contact`: Contact information about the game developer.
+- `Imprint and Contact`: Contact information about the game developer.
 - `Support`: The player can make a voluntary financial contribution to the development of the game 
 
 ## Development
