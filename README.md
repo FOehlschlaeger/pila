@@ -1,4 +1,4 @@
-![./.drawio/app-icon.svg](./.drawio/app-icon.svg)
+![./.drawio/app-icon.svg](./assets/.drawio/app-icon.svg)
 
 ## PILA
 In this [Flutter](https://flutter.dev/) game you have to stack different tetris forms to match a given pattern of numbers, or to reduce stacks of numbers to flatten all fields to zero to finish the level. 
@@ -12,7 +12,7 @@ _The name "PILA" originates from spanish and refers to "stack" or "pile", which 
 ### Concept
 The following diagram shows the first basic concept for designing the app and different screens. 
 
-![./.drawio/app-concept.svg](./.drawio/app-concept.svg)
+![./.drawio/app-concept.svg](./assets/.drawio/app-concept.svg)
 
 Notes to `Play`:
 - `Start Game`: The player can continue with the game / level.
@@ -32,16 +32,16 @@ Notes to `About`:
 - `Support`: The player can make a voluntary financial contribution to the development of the game 
 
 ### Menu Screen
-![./.drawio/menu-screen.svg](./.drawio/menu-screen.svg)
+![./.drawio/menu-screen.svg](./assets/.drawio/menu-screen.svg)
 
 ### Play Screen
-![./.drawio/play-screen.svg](./.drawio/play-screen.svg)
+![./.drawio/play-screen.svg](./assets/.drawio/play-screen.svg)
 
 ### Settings Screen
-![./.drawio/settings-screen.svg](./.drawio/settings-screen.svg)
+![./.drawio/settings-screen.svg](./assets/.drawio/settings-screen.svg)
 
 ### About Screen
-![./.drawio/about-screen.svg](./.drawio/about-screen.svg)
+![./.drawio/about-screen.svg](./assets/.drawio/about-screen.svg)
 
 ## Development
 This game is developed using [Flutter](https://flutter.dev/). 
