@@ -37,12 +37,6 @@ Notes to `About`:
 ### Play Screen
 ![./.drawio/play-screen.svg](./assets/.drawio/play-screen.svg)
 
-### Settings Screen
-![./.drawio/settings-screen.svg](./assets/.drawio/settings-screen.svg)
-
-### About Screen
-![./.drawio/about-screen.svg](./assets/.drawio/about-screen.svg)
-
 ## Development
 This game is developed using [Flutter](https://flutter.dev/). 
 
