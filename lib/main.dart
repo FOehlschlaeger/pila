@@ -12,7 +12,8 @@ class Pila extends StatelessWidget {
     return MaterialApp(
       title: 'Pila Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 16, 177, 226)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(
+            255, 139, 248, 50)),
         useMaterial3: true,
       ),
       home: const PilaHome(title: 'PILA'),
