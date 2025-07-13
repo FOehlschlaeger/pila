@@ -30,7 +30,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu,
-              color: Colors.white), // Burger-Menü-Icon links
+              color: Color.fromARGB(255, 80, 80, 80)), // Burger-Menü-Icon links
           onPressed: () {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Burger-Menü geklickt!')),
@@ -46,7 +46,7 @@ class MyHomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline,
-                color: Colors.white), // Hilfe-Icon rechts
+                color: Color.fromARGB(255, 80, 80, 80)), // Hilfe-Icon rechts
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Hilfe-Icon geklickt!')),
@@ -87,17 +87,17 @@ class MyHomePage extends StatelessWidget {
           children: [
             // Oberste Zeile: Zentraler Bereich
             Expanded(
-              flex: 6, // Nimmt mehr Platz ein
+              flex: 1, // Nimmt mehr Platz ein
               child: Center(
                 child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  margin: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(5.0),
+                  margin: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(15.0),
+                    color: Colors.white.withValues(alpha: 0.8),
+                    borderRadius: BorderRadius.circular(4.0),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha: 0.2),
                         spreadRadius: 2,
                         blurRadius: 5,
                         offset: const Offset(0, 3),
@@ -105,16 +105,24 @@ class MyHomePage extends StatelessWidget {
                     ],
                   ),
                   child: const Text(
-                    'Willkommen zu meinem spannenden Spiel!\nBereit für das Abenteuer?',
+                    'Reload for new level',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87),
+                      fontSize: 10.0,
+                      // fontWeight: FontWeight.bold,
+                      // color: Colors.black87),
+                    ),
                   ),
                 ),
               ),
             ),
+
+            Expanded(
+                flex: 5,
+                child: Center(
+                    child: const Text(
+                        'Hier kommt das Grid hin') // GameGridScreen(),
+                    )),
 
             // Mittlere Zeile: Sieben Icons mit Zahlenfeldern (4 oben, 3 unten)
             Expanded(
@@ -160,6 +168,7 @@ class MyHomePage extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Container(
+                // alignment: Alignment.center,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -182,8 +191,16 @@ class MyHomePage extends StatelessWidget {
                           tooltip: "Revert last step, hold to reset",
                           onPressed: (() => {}),
                           iconSize: 60,
+                          color: Color.fromARGB(255, 80, 80, 80),
                         ),
-                        Text('Revert | Reset'),
+                        Text(
+                          'Revert',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
+                        Text('(Hold for reset)')
                       ],
                     ),
                     Column(
@@ -193,8 +210,15 @@ class MyHomePage extends StatelessWidget {
                           tooltip: "Apply tetromino tile",
                           onPressed: (() => {}),
                           iconSize: 60,
+                          color: Color.fromARGB(255, 80, 80, 80),
                         ),
-                        Text('Apply'),
+                        Text(
+                          'Apply',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
                       ],
                     ),
                     Column(
@@ -204,8 +228,15 @@ class MyHomePage extends StatelessWidget {
                           tooltip: "Rotate by 90 degrees",
                           onPressed: (() => {}),
                           iconSize: 60,
+                          color: Color.fromARGB(255, 80, 80, 80),
                         ),
-                        Text('Rotate'),
+                        Text(
+                          'Rotate',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -245,3 +276,30 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+/* 
+class GameGridScreen extends StatefulWidget {
+  const GameGridScreen({super.key});
+
+  @override
+  State<GameGridScreen> createState() => _GameGridScreenState();
+}
+
+class _GameGridScreenState extends State<GameGridScreen> {
+  // Der Zustand des Rasters: Eine Liste von 16 Zahlen
+  late List<int> _gridNumbers;
+  final int _gridSize = 4; // 4x4 Gitter
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeGrid();
+  }
+
+  // Initialisiert das Gitter mit Zufallszahlen oder einem Startzustand
+  void _initializeGrid() {
+    _gridNumbers = List.generate(_gridSize * _gridSize,
+        (index) => Random().nextInt(100)); // Zahlen von 0-99
+    // Optional: Einen vordefinierten Startzustand setzen:
+    // _gridNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  }
+} */
