@@ -1,65 +1,29 @@
-![./.drawio/app-icon.svg](./assets/.drawio/app-icon.svg)
+<img src="./assets/images/pila-icon.png" width="200">
 
 ## PILA
-In this [Flutter](https://flutter.dev/) game you have to stack different tetris forms to match a given pattern of numbers, or to reduce stacks of numbers to flatten all fields to zero to finish the level. 
+In this [Flutter](https://flutter.dev/) game you have to reduce digits in the grid to zero to clear the level. 
 
 This cross-platform app is developed for Android and iOS devices.
 
-_Naming_
+>  _The name "PILA" originates from spanish and refers to "stack" or "pile", which corresponds to the digit stacks which have to be zero-ed to clear the level successfully._
 
-_The name "PILA" originates from spanish and refers to "stack" or "pile", which corresponds to the number stacks which have to be flattened by the players to finish the level successfully._
+### How to play
+<img src="./assets/images/pila-example-screen.png" width="300">
 
-### Concept
-The following diagram shows the first basic concept for designing the app and different screens. 
+> _Main Screen_
 
-![./.drawio/app-concept.svg](./assets/.drawio/app-concept.svg)
+All digits in the central grid have to be reduced down to zero to clear the level. To achieve this, use each of the seven different Tetromino tiles below. Each digit in the grid covered by the selected Tetromino tile is reduced by one. 
 
-Notes to `Play`:
-- `Start Game`: The player can continue with the game / level.
-- `How to play`: The player can learn the basics with 1 to 3 levels which explain the mechanics and rules and how to play the game.
+Select one Tetromino tile and move it via swiping left/right and up/down to a fitting position, or rotate it using the `Rotate` button below. Then, `Apply` the Tetromino in the grid. Each level is build out of a specific set of Tetromino tiles. 
 
-Notes to `Settings`:
-- `Light / Dark Mode`: The player can select between dark mode and light mode, as well as color settings for color blindness.
-- `Game Mode`: 
-  - `easy`: Single fields of each element do have different values (not just 1), this simplifies the game due to easier identifiable positions.
-  - `classic`: All single fiels of each element do have the value 1.
-- `Field Size`:
-  - The player can choose between 4x4, 5x5 or 6x6 field size.
+To undo the last applied Tetromino, use the `Revert` button, or hold it to reset the entire level. 
 
-Notes to `About`:
-- `Version`: Version of the game (e.g. `MAJOR.MINOR.PATCH` version)
-- `Imprint and Contact`: Contact information about the game developer.
-- `Support`: The player can make a voluntary financial contribution to the development of the game 
+To generate a new level just reload the screen by dragging the screen from top to bottom.
 
-### Menu Screen
-![./.drawio/menu-screen.svg](./assets/.drawio/menu-screen.svg)
+Via the `Burger menu` in the upper left corner you get to the `Settings`, `Feedback` or the `About` options. To show the rules how to play, check out the `Help` button in the upper right corner.
 
-### Play Screen
-![./.drawio/play-screen.svg](./assets/.drawio/play-screen.svg)
+## Feedback
+Feel free to let me know about bugs or features you wish to be added to the game in the [Github Issues of this project](https://github.com/FOehlschlaeger/pila/issues). 
 
 ## Development
 This game is developed using [Flutter](https://flutter.dev/). 
-
-- [ ] First step, will be the `Menu screen`
-- [ ] Second, the `About` screen with its submenues shows text and basic information
-- [ ] Third, the `Settings` screen and its submenues offers some parameters to be changed or switched by the user
-- [ ] Next, the `How to play` should provide the first playable levels, which are available in the `Play` screen
-- [ ] Finally, the `Play` screen loads the first level for the users to play
-
-Mechanics to implement:
-- [ ] Define the square game field
-- [ ] Implement the seven element forms to keep also their shape after rotation
-- [ ] Implement the summation of each number stack
-- [ ] Implement the algorithm to setup the stacked level to play
-- [ ] Implement the boundary limitations of the forms to not overlap with the boundary of the game field
-- [ ] Implement the level screen with the game field and the different element forms and buttons at the bottom of the screen
-- [ ] Implement the rotation mechanism for rotating smartphone screen
-
-Build and deploy the app:
-- [ ] Gather information about deploying an app to app stores
-- [ ] Android with Google Play Store
-- [ ] iOS with App Store
-
-Testing the app
-- [ ] Testing during development
-- [ ] Testing by first beta testers
