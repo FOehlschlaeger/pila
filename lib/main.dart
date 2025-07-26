@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pila/screens/number_grid.dart';
+import 'screens/appbar.dart';
+import 'screens/burger_menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mein Flutter-Spiel',
+      title: 'Pila',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -27,48 +31,10 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // --- AppBar-Bereich ---
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu,
-              color: Color.fromARGB(255, 80, 80, 80)), // Burger-Menü-Icon links
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Burger-Menü geklickt!')),
-            );
-          },
-          iconSize: 35,
-        ),
-        title: Image.asset(
-          'assets/images/pila-icon.png', // Dein Bildpfad hier
-          height: 45, // Höhe des Bildes in der AppBar
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline,
-                color: Color.fromARGB(255, 80, 80, 80)), // Hilfe-Icon rechts
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Hilfe-Icon geklickt!')),
-              );
-            },
-            iconSize: 35,
-          ),
-        ],
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 148, 148, 148),
-                Color.fromARGB(255, 255, 255, 255),
-                // Color.fromARGB(255, 148, 148, 148)
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-        ),
-      ),
+      appBar: PilaAppBar(),
+
+      // --- Settings drawer ---
+      drawer: PilaDrawer(),
 
       // --- Zentraler Bereich (Body) ---
       body: Container(
@@ -120,9 +86,10 @@ class MyHomePage extends StatelessWidget {
             Expanded(
                 flex: 5,
                 child: Center(
-                    child: const Text(
-                        'Hier kommt das Grid hin') // GameGridScreen(),
-                    )),
+                  child: GameGridScreen(),
+                  // child: const Text(
+                  //    'Hier kommt das Grid hin') // GameGridScreen(),
+                )),
 
             // Mittlere Zeile: Sieben Icons mit Zahlenfeldern (4 oben, 3 unten)
             Expanded(
@@ -198,15 +165,22 @@ class MyHomePage extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text('(Hold for reset)')
+                        Text(
+                          'Hold to reset',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 10.0,
+                          ),
+                        )
                       ],
                     ),
                     Column(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.play_circle_fill),
+                          icon: const Icon(Icons.vertical_align_bottom),
                           tooltip: "Apply tetromino tile",
                           onPressed: (() => {}),
                           iconSize: 60,
@@ -217,6 +191,7 @@ class MyHomePage extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -235,6 +210,7 @@ class MyHomePage extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -276,30 +252,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-/* 
-class GameGridScreen extends StatefulWidget {
-  const GameGridScreen({super.key});
-
-  @override
-  State<GameGridScreen> createState() => _GameGridScreenState();
-}
-
-class _GameGridScreenState extends State<GameGridScreen> {
-  // Der Zustand des Rasters: Eine Liste von 16 Zahlen
-  late List<int> _gridNumbers;
-  final int _gridSize = 4; // 4x4 Gitter
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeGrid();
-  }
-
-  // Initialisiert das Gitter mit Zufallszahlen oder einem Startzustand
-  void _initializeGrid() {
-    _gridNumbers = List.generate(_gridSize * _gridSize,
-        (index) => Random().nextInt(100)); // Zahlen von 0-99
-    // Optional: Einen vordefinierten Startzustand setzen:
-    // _gridNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-  }
-} */
