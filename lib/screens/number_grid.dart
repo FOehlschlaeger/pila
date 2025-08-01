@@ -70,15 +70,16 @@ class _GameGridScreenState extends State<GameGridScreen> {
       ),
       */
       body: Container(
-        /*
-        decoration: const BoxDecoration(
+        decoration:  const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurpleAccent, Colors.purple],
+            colors: [
+              Color.fromARGB(255, 155, 182, 212),
+              Color.fromARGB(255, 255, 255, 255)
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
-        */
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -86,10 +87,10 @@ class _GameGridScreenState extends State<GameGridScreen> {
               aspectRatio: 1, // square grid
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1), // slighty transparency
+                  color: const Color.fromARGB(255, 190, 190, 190).withOpacity(0.1), // slighty transparency
                   borderRadius: BorderRadius.circular(15.0),
                   border: Border.all(
-                      color: Colors.white.withOpacity(0.3), width: 2),
+                      color: const Color.fromARGB(255, 70, 70, 70).withOpacity(0.3), width: 2),
                 ),
                 child: GridView.builder(
                   padding: const EdgeInsets.all(8.0),
@@ -122,7 +123,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
                         child: Text(
                           '${_gridNumbers[index]}', // Zeigt die aktuelle Zahl an
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 255, 255, 255),
                             fontSize: 32.0,
                             fontWeight: FontWeight.bold,
                           ),
