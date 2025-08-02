@@ -20,11 +20,11 @@ class TetrominoButtons extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildImageWithNumber(
-                    'assets/images/tetromino-I.png', 3),
+                    'assets/images/tetromino-I.png', 2),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-O.png', 2),
+                    'assets/images/tetromino-O.png', 1),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-J.png', 1),
+                    'assets/images/tetromino-J.png', 0),
                 _buildImageWithNumber(
                     'assets/images/tetromino-L.png', 0),
               ],
@@ -34,11 +34,11 @@ class TetrominoButtons extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildImageWithNumber(
-                    'assets/images/tetromino-S.png', 2),
+                    'assets/images/tetromino-S.png', 0),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-Z.png', 1),
+                    'assets/images/tetromino-Z.png', 0),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-T.png', 2),
+                    'assets/images/tetromino-T.png', 0),
               ],
             ),
           ],
@@ -53,10 +53,6 @@ Widget _buildImageWithNumber(String imagePath, int number) {
     children: [
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        // decoration: BoxDecoration(
-        //   color: const Color.fromARGB(255, 110, 110, 110),
-        //   borderRadius: BorderRadius.circular(15),
-        // ),
         child: Text(
           "${number}x",
           style: const TextStyle(

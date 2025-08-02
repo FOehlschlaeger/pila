@@ -58,16 +58,17 @@ class PilaHome extends StatelessWidget {
             ReloadArea(),
 
             Expanded(
-                flex: 5,
-                child: Center(
-                  child: GameGridScreen(),
-                )),
+              flex: 5,
+              child: Center(
+                child: GameGridScreen(),
+              )
+            ),
 
             // Mittlere Zeile: TetrominoButtons mit Zahlenfeldern (4 oben, 3 unten)
             TetrominoButtons(),
 
             // Unterste Zeile: ActionButtons
-            action_buttons(),
+            ActionButtons(),
           ],
         ),
       ),

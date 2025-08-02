@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class action_buttons extends StatelessWidget {
-  const action_buttons({
+class ActionButtons extends StatelessWidget {
+  const ActionButtons({
     super.key,
   });
 
