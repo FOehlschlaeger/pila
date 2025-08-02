@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:pila/config/numberColors.dart';
+
 class GameGridScreen extends StatefulWidget {
   const GameGridScreen({super.key});
 
@@ -22,7 +24,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   // Initializes the grid with random numbers or a random state
   void _initializeGrid() {
     _gridNumbers = List.generate(
-        _gridSize * _gridSize, (index) => Random().nextInt(8)); // number range
+        _gridSize * _gridSize, (index) => Random().nextInt(5)); // number range
     // Optional: Setting a predefined state
     // _gridNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   }
@@ -31,9 +33,8 @@ class _GameGridScreenState extends State<GameGridScreen> {
   void _changeNumber(int index) {
     setState(() {
       // Example: INcrease the number by 1, or set a new random number
-      _gridNumbers[index] = (_gridNumbers[index] + 1) %
-          15; // Increase number or reset back to 0 at reaching 15
-      // _gridNumbers[index] = Random().nextInt(100); // Or a new random number
+      _gridNumbers[index] = (_gridNumbers[index] - 1) %
+          10; // Increase number or reset back to 0 at reaching 10
     });
     // Here a complex game logic can be appied,
     // i.e. check, if an action is valid, giving points etc.
@@ -101,14 +102,14 @@ class _GameGridScreenState extends State<GameGridScreen> {
                     mainAxisSpacing: 8.0, // distance between rows
                   ),
                   itemBuilder: (context, index) {
-                    // Jedes Feld ist ein GestureDetector, um Klicks zu erkennen
+                    // Each field is a GestureDetector, to recognize clicks
                     return GestureDetector(
                       onTap: () =>
-                          _changeNumber(index), // Ruft die Logik bei Klick auf
+                          _changeNumber(index), // Calls logic at click
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey.shade700
-                              .withOpacity(0.8), // Hintergrundfarbe des Feldes
+                          // color: Colors.blueGrey.shade700.withOpacity(0.8), // Background color of the field
+                          color: getNumberColors(_gridNumbers[index]), // Background color of the field
                           borderRadius: BorderRadius.circular(8.0),
                           boxShadow: [
                             BoxShadow(
@@ -121,7 +122,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          '${_gridNumbers[index]}', // Zeigt die aktuelle Zahl an
+                          '${_gridNumbers[index]}', // Shows the actual number
                           style: const TextStyle(
                             color: Color.fromARGB(255, 255, 255, 255),
                             fontSize: 32.0,

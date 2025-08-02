@@ -5,15 +5,19 @@ The higher the digit, the darker the color.
  */
 import 'package:flutter/material.dart';
 
-Map<int, Color?> numberColors = {
+Map<int, Color> numberColors = {
   0: Colors.white,
-  1: Colors.blueGrey[200],
-  2: Colors.blueGrey[300],
-  3: Colors.blueGrey[400],
-  4: Colors.blueGrey[500],
-  5: Colors.blueGrey[600],
-  6: Colors.blueGrey[700],
-  7: Colors.blueGrey[800],
-  8: Colors.blueGrey[900],
+  1: Colors.blueGrey.shade200,
+  2: Colors.blueGrey.shade300,
+  3: Colors.blueGrey.shade400,
+  4: Colors.blueGrey.shade500,
+  5: Colors.blueGrey.shade600,
+  6: Colors.blueGrey.shade700,
+  7: Colors.blueGrey.shade800,
+  8: Colors.blueGrey.shade900,
   9: Colors.black,
 };
+
+Color getNumberColors(int number) {
+  return numberColors[number] ?? Colors.transparent;
+}
