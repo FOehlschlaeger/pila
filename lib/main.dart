@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pila/screens/action_buttons.dart';
-import 'package:pila/screens/number_grid.dart';
-import 'package:pila/screens/reload_area.dart';
-import 'package:pila/screens/tetromino_buttons.dart';
-import 'screens/appbar.dart';
-import 'screens/burger_menu.dart';
+import 'package:pila/screens/home_actions.dart';
+import 'package:pila/screens/home_grid.dart';
+import 'package:pila/screens/home_reload.dart';
+import 'package:pila/screens/home_tetrominos.dart';
+import 'screens/home_appbar.dart';
+import 'screens/home_menu.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Pila());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Pila extends StatelessWidget {
+  const Pila({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +21,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(),
+      home: const PilaHome(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class PilaHome extends StatelessWidget {
+  const PilaHome({super.key});
 
   @override
   Widget build(BuildContext context) {
