@@ -1,5 +1,5 @@
 name: pila
-description: A mobile game to zero a square field of digits using tetrominos.
+description: A mobile game to clear a square field of digits using tetrominos.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -15,6 +15,9 @@ dependencies:
   english_words: ^4.0.0
   provider: ^6.0.0
   scidart: ^0.0.2-dev.12
+  sqflite: ^2.4.2
+  path: ^1.9.1
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
