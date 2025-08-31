@@ -15,6 +15,10 @@ allprojects {
         google()
         mavenCentral()
     }
+    // To resolve warning: 'source value 8 is obsolete and will be removed in a future release'
+    tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:-options'
+    }
 }
 
 rootProject.buildDir = '../build'
