@@ -33,13 +33,13 @@ class PilaHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // --- AppBar-Bereich ---
+      // --- AppBar area ---
       appBar: PilaAppBar(),
 
       // --- Settings drawer ---
       drawer: PilaDrawer(),
 
-      // --- Zentraler Bereich (Body) ---
+      // --- Central area (Body) ---
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -54,7 +54,7 @@ class PilaHome extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Oberste Zeile: Zentraler Bereich
+            // Upper row: Central area
             ReloadArea(),
 
             Expanded(
@@ -64,10 +64,10 @@ class PilaHome extends StatelessWidget {
               )
             ),
 
-            // Mittlere Zeile: TetrominoButtons mit Zahlenfeldern (4 oben, 3 unten)
+            // Middle row: TetrominoButtons with counters (4 upper, 3 lower)
             TetrominoButtons(),
 
-            // Unterste Zeile: ActionButtons
+            // Lower row: ActionButtons
             ActionButtons(),
           ],
         ),
