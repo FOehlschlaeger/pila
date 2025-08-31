@@ -8,7 +8,7 @@ class ReloadArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 1, // Nimmt mehr Platz ein
+      flex: 1, // Space on screen
       child: Center(
         child: Container(
           padding: const EdgeInsets.all(5.0),
@@ -30,8 +30,7 @@ class ReloadArea extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 10.0,
-              // fontWeight: FontWeight.bold,
-              // color: Colors.black87),
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
