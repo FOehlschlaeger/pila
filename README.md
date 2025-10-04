@@ -27,3 +27,24 @@ Feel free to let me know about bugs or features you wish to be added to the game
 
 ## Development
 This game is developed using [Flutter](https://flutter.dev/). 
+
+### Upcoming Features
+- [x] Design buttons and icons
+- [x] Design main screen
+- [x] Implement "About screen"
+- [x] Implement "Feedback screen" with link to github
+- [x] Implement "Help screen" with instructions on how to play
+- [ ] Implement in settings to set language
+- [ ] Implement in settings to set dark mode
+- [ ] Handle state management of level state in backend
+- [x] Implement classes for tiles
+- [x] Implement basic functions for level state changes in backend
+- [ ] Implement reloading function to generate a new level when reloading the app
+- [ ] Implement function buttons to display a tile in the field
+- [ ] Implement function to move a tile vertically and horizontally via interaction
+- [ ] Implement function to revert a tile placement via button
+- [ ] Implement function to apply a tile via button
+- [ ] Implement function to rotate a tile via button
+- [ ] Implement holdable Button on reset the current level via button
+- [ ] Optional: Rotate all widgets in place when device is rotated
+- [ ] Optional: Add gifs or animations to help screen
