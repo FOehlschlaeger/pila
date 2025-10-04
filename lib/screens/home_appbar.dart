@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pila/screens/home_help.dart';
 
 class PilaAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PilaAppBar({
@@ -8,6 +9,8 @@ class PilaAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+
+      // --- Menu ---
       leading: IconButton(
         icon: const Icon(Icons.menu, color: Color.fromARGB(255, 80, 80, 80)),
         onPressed: () {
@@ -15,23 +18,20 @@ class PilaAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         iconSize: 35,
       ),
+
+      // --- App Icon ---
       title: Image.asset(
         'assets/images/pila-icon.png',
         height: 45,
       ),
+
+      // --- Help ---
       centerTitle: true,
       actions: [
-        IconButton(
-          icon: const Icon(Icons.help_outline,
-              color: Color.fromARGB(255, 80, 80, 80)),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Hilfe-Icon geklickt!')),
-            );
-          },
-          iconSize: 35,
-        ),
+        HomeHelpDialog(),
       ],
+
+      // --- AppBar design ---
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
