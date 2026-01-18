@@ -44,3 +44,4 @@ app.*.map.json
 
 # Assets
 /assets/images/*.svg
+/assets/images/PILA/
