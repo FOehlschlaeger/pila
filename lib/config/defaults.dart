@@ -1,36 +1,23 @@
-/*
-General settings available at settings screen.
- */
+/// General settings available at settings screen.
+library;
 
-/*
-Default field size. Field should always be a square.
-Maybe in future releases it will be possible to set a new size.
- */
-const int fieldLength = 4;
-const int defaultRows = fieldLength;
-const int defaultColumns = fieldLength;
+/// Default grid size. Grid should always be a square. 
+const int gridLength = 4;
+const int defaultRows = gridLength;
+const int defaultColumns = gridLength;
 
-/*
-Set if default value of 1 should be used.
-Can be switched in settings via toggle.
-Default value is set to 1.
- */
-bool defaultValueActive = true;
-const int defaultValue = 1;
-int randomNumberLimit = 5;
+/// Range to choose the total number of tetromino tiles in the level
+const int lowerTileCounter = 5;
+const int upperTileCounter = 10;
 
-/*
-Light mode is default.
- */
+// Range to choose the number of applied operations for each tile
+const int lowerTileOperation = 0;
+const int upperTileOperation = 8;
+
+/// Light mode is default.
 bool lightMode = true;
 
-/*
-Language settings.
-English is default.
- */
+/// Language settings. English is default.
 List<String> languages = ["german", "english"];
 
-/*
-Color settings.
-It is possible to adjust colors with regards to color blindness.
- */
+/// Color settings. It is possible to adjust colors with regards to color blindness.
