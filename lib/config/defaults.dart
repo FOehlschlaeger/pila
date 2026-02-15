@@ -1,23 +1,23 @@
-/// General settings available at settings screen.
+// General settings available at settings screen.
 library;
 
-/// Default grid size. Grid should always be a square. 
+// Default grid size. Grid should always be a square. 
 const int gridLength = 4;
 const int defaultRows = gridLength;
 const int defaultColumns = gridLength;
 
-/// Range to choose the total number of tetromino tiles in the level
-const int lowerTileCounter = 5;
-const int upperTileCounter = 10;
+// Range to choose the total number of tetromino tiles in the level
+const int lowerTileCounter = 2; // 5;
+const int upperTileCounter = 4; // 10;
 
 // Range to choose the number of applied operations for each tile
 const int lowerTileOperation = 0;
-const int upperTileOperation = 8;
+const int upperTileOperation = 6;
 
-/// Light mode is default.
+// Light mode is default.
 bool lightMode = true;
 
-/// Language settings. English is default.
+// Language settings. English is default.
 List<String> languages = ["german", "english"];
 
-/// Color settings. It is possible to adjust colors with regards to color blindness.
+// Color settings. It is possible to adjust colors with regards to color blindness.
