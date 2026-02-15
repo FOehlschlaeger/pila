@@ -7,56 +7,42 @@ import 'dart:collection';
 import '/config/defaults.dart';
 
 class Tetromino with ListMixin<List<int>> {
-  // 1. Instanzvariable: Deklariert als final, da sie nach der Initialisierung
-  //    nicht durch eine neue Liste ersetzt werden soll.
   final List<List<int>> _grid;
 
-  // 2. Default-Konstruktor: Initialisiert die Matrix direkt beim Erstellen.
-  //    Nutzt die standardmäßigen Konstanten.
   Tetromino([int rows = defaultRows, int columns = defaultColumns])
       : _grid = List.generate(
           rows, 
-          (i) => List.filled(columns, 0) // 'List.filled' ist effizienter als List.generate für konstante Werte
+          (i) => List.filled(columns, 0)
         );
 
-  // 3. Named Constructor: Erlaubt das Erstellen eines Tetromino-Objekts aus
-  //    einer bestehenden Matrix.
   Tetromino.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
 
-  // --- Implementierung der ListMixin-Methoden (Delegation an _grid) ---
-  // Diese Methoden sind notwendig, wenn man ListMixin verwendet.
+  Tetromino copyWith(List<List<int>> newGrid) {
+    return Tetromino.fromExistingGrid(newGrid);
+  }
 
-  // 4. Getter für die Länge
   @override
   int get length => _grid.length;
 
-  // 5. Setter für die Länge (verwendet nur für die äußere Liste/Zeilen)
   @override
   set length(int newLength) {
     _grid.length = newLength;
   }
 
-  // 6. Index-Operator (Lesen: Tetromino[i])
   @override
   List<int> operator [](int index) {
     return _grid[index];
   }
 
-  // 7. Index-Operator (Schreiben: Tetromino[i] = [..])
   @override
   void operator []=(int index, List<int> value) {
     _grid[index] = value;
   }
 
-  // --- Zusätzliche Methoden ---
-
-  // 8. Methoden, die direkt auf der internen Liste operieren
-  //    (Deine ursprüngliche 'add' Methode)
   void addRow(List<int> row) {
     _grid.add(row);
   }
 
-  // 9. Getter für die Spaltengröße (wird aus der ersten Zeile abgeleitet)
   int get columnSize {
     if (_grid.isEmpty) return 0;
     return _grid.first.length;
@@ -71,18 +57,27 @@ class Tetromino with ListMixin<List<int>> {
 //   [0, 0, 1, 0]
 // ]
 class TetrominoI extends Tetromino {
+
+  TetrominoI._internal([List<List<int>>? grid])
+    : super.fromExistingGrid(grid ?? [
+      [0, 0, 1, 0],
+      [0, 0, 1, 0],
+      [0, 0, 1, 0],
+      [0, 0, 1, 0],
+    ]);
+  
+  factory TetrominoI() {
+    return TetrominoI._internal();
+  }
+
+  factory TetrominoI.fromGrid(List<List<int>> existingGrid) {
+    return TetrominoI._internal(existingGrid);
+  }
+
   @override
-  final List<List<int>> _grid;
-
-  TetrominoI([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = [
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-      ];
-
-  TetrominoI.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  TetrominoI copyWith(List<List<int>> newGrid) {
+    return TetrominoI.fromGrid(newGrid);
+  }
 }
 
 // Tetromino J
@@ -93,18 +88,27 @@ class TetrominoI extends Tetromino {
 //   [0, 0, 0, 0]
 // ]
 class TetrominoJ extends Tetromino {
+
+  TetrominoJ._internal([List<List<int>>? grid])
+    : super.fromExistingGrid(grid ?? [
+      [0, 0, 1, 0],
+      [0, 0, 1, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 0],
+    ]);
+
+  factory TetrominoJ() {
+    return TetrominoJ._internal();
+  }
+
+  factory TetrominoJ.fromGrid(List<List<int>> existingGrid) {
+    return TetrominoJ._internal(existingGrid);
+  }
+
   @override
-  final List<List<int>> _grid;
-
-  TetrominoJ([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = [
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 1, 1, 0],
-        [0, 0, 0, 0],
-      ];
-
-  TetrominoJ.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  TetrominoJ copyWith(List<List<int>> newGrid) {
+    return TetrominoJ.fromGrid(newGrid);
+  }
 }
 
 // Tetromino L
@@ -115,18 +119,27 @@ class TetrominoJ extends Tetromino {
 //   [0, 0, 0, 0]
 // ]
 class TetrominoL extends Tetromino {
+
+  TetrominoL._internal([List<List<int>>? grid])
+    : super.fromExistingGrid(grid ?? [
+      [0, 1, 0, 0],
+      [0, 1, 0, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 0],
+    ]);
+
+  factory TetrominoL() {
+    return TetrominoL._internal();
+  }
+
+  factory TetrominoL.fromGrid(List<List<int>> existingGrid) {
+    return TetrominoL._internal(existingGrid);
+  }
+
   @override
-  final List<List<int>> _grid;
-
-  TetrominoL([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = [
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 1, 0],
-        [0, 0, 0, 0],
-      ];
-
-  TetrominoL.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  TetrominoL copyWith(List<List<int>> newGrid) {
+    return TetrominoL.fromGrid(newGrid);
+  }
 }
 
 // Tetromino O
@@ -137,18 +150,27 @@ class TetrominoL extends Tetromino {
 //   [0, 0, 0, 0]
 // ]
 class TetrominoO extends Tetromino {
+
+  TetrominoO._internal([List<List<int>>? grid])
+    : super.fromExistingGrid(grid ?? [
+      [0, 0, 0, 0],
+      [0, 1, 1, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 0],
+    ]);
+
+  factory TetrominoO() {
+    return TetrominoO._internal();
+  }
+
+  factory TetrominoO.fromGrid(List<List<int>> existingGrid) {
+    return TetrominoO._internal(existingGrid);
+  }
+
   @override
-  final List<List<int>> _grid;
-
-  TetrominoO([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = [
-        [0, 0, 0, 0],
-        [0, 1, 1, 0],
-        [0, 1, 1, 0],
-        [0, 0, 0, 0],
-      ];
-
-  TetrominoO.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  TetrominoO copyWith(List<List<int>> newGrid) {
+    return TetrominoO.fromGrid(newGrid);
+  }
 }
 
 // Tetromino S
@@ -159,18 +181,27 @@ class TetrominoO extends Tetromino {
 //   [0, 0, 0, 0]
 // ]
 class TetrominoS extends Tetromino {
+  
+  TetrominoS._internal([List<List<int>>? grid])
+    : super.fromExistingGrid(grid ?? [
+      [0, 0, 0, 0],
+      [0, 1, 1, 0],
+      [1, 1, 0, 0],
+      [0, 0, 0, 0],
+    ]);
+
+  factory TetrominoS() {
+    return TetrominoS._internal();
+  }
+
+  factory TetrominoS.fromGrid(List<List<int>> existingGrid) {
+    return TetrominoS._internal(existingGrid);
+  }
+
   @override
-  final List<List<int>> _grid;
-
-  TetrominoS([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = [
-        [0, 0, 0, 0],
-        [0, 1, 1, 0],
-        [1, 1, 0, 0],
-        [0, 0, 0, 0],
-      ];
-
-  TetrominoS.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  TetrominoS copyWith(List<List<int>> newGrid) {
+    return TetrominoS.fromGrid(newGrid);
+  }
 }
 
 // Tetromino T
@@ -181,18 +212,27 @@ class TetrominoS extends Tetromino {
 //   [0, 0, 0, 0]
 // ]
 class TetrominoT extends Tetromino {
+
+  TetrominoT._internal([List<List<int>>? grid])
+    : super.fromExistingGrid(grid ?? [
+      [0, 0, 0, 0],
+      [1, 1, 1, 0],
+      [0, 1, 0, 0],
+      [0, 0, 0, 0],
+    ]);
+
+  factory TetrominoT() {
+    return TetrominoT._internal();
+  }
+
+  factory TetrominoT.fromGrid(List<List<int>> existingGrid) {
+    return TetrominoT._internal(existingGrid);
+  }
+
   @override
-  final List<List<int>> _grid;
-
-  TetrominoT([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = [
-        [0, 0, 0, 0],
-        [1, 1, 1, 0],
-        [0, 1, 0, 0],
-        [0, 0, 0, 0],
-      ];
-
-  TetrominoT.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  TetrominoT copyWith(List<List<int>> newGrid) {
+    return TetrominoT.fromGrid(newGrid);
+  }
 }
 
 // Tetromino Z
@@ -203,16 +243,25 @@ class TetrominoT extends Tetromino {
 //   [0, 0, 0, 0]
 // ]
 class TetrominoZ extends Tetromino {
+  
+  TetrominoZ._internal([List<List<int>>? grid])
+    : super.fromExistingGrid(grid ?? [
+      [0, 0, 0, 0],
+      [1, 1, 0, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 0],
+    ]);
+
+  factory TetrominoZ() {
+    return TetrominoZ._internal();
+  }
+
+  factory TetrominoZ.fromGrid(List<List<int>> existingGrid) {
+    return TetrominoZ._internal(existingGrid);
+  }
+
   @override
-  final List<List<int>> _grid;
-
-  TetrominoZ([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = [
-        [0, 0, 0, 0],
-        [1, 1, 0, 0],
-        [0, 1, 1, 0],
-        [0, 0, 0, 0],
-      ];
-
-  TetrominoZ.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  TetrominoZ copyWith(List<List<int>> newGrid) {
+    return TetrominoZ.fromGrid(newGrid);
+  }
 }
