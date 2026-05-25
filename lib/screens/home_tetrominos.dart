@@ -1,9 +1,16 @@
+// import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
 import 'package:flutter/material.dart';
+import 'package:pila/models/level_state.dart';
+import 'package:pila/models/tetromino.dart';
 
 class TetrominoButtons extends StatelessWidget {
-  const TetrominoButtons({
-    super.key,
+  TetrominoButtons({
+    super.key, 
+    required LevelState lvlstate,
   });
+
+  // final int tetrominoI_counter = lvlstate['counter_TetrominoI']['current'];
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +27,13 @@ class TetrominoButtons extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildImageWithNumber(
-                    'assets/images/tetromino-I.png', 2),
+                    'assets/images/tetromino-I.png', 2, TetrominoI()),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-O.png', 1),
+                    'assets/images/tetromino-O.png', 1, TetrominoO()),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-J.png', 0),
+                    'assets/images/tetromino-J.png', 0, TetrominoJ()),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-L.png', 0),
+                    'assets/images/tetromino-L.png', 0, TetrominoL()),
               ],
             ),
             // Untere Reihe der sieben Icons (3 Icons)
@@ -34,11 +41,11 @@ class TetrominoButtons extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildImageWithNumber(
-                    'assets/images/tetromino-S.png', 0),
+                    'assets/images/tetromino-S.png', 0, TetrominoS()),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-Z.png', 0),
+                    'assets/images/tetromino-Z.png', 0, TetrominoZ()),
                 _buildImageWithNumber(
-                    'assets/images/tetromino-T.png', 0),
+                    'assets/images/tetromino-T.png', 0, TetrominoT()),
               ],
             ),
           ],
@@ -48,24 +55,26 @@ class TetrominoButtons extends StatelessWidget {
   }
 }
 
-Widget _buildImageWithNumber(String imagePath, int number) {
-  return Row(
-    children: [
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Text(
+Widget _buildImageWithNumber(String imagePath, int number, Tetromino f) {
+  return IconButton(
+    onPressed: () {
+      f;
+    }, // input variable for widget
+    icon: Row(
+      children: [
+        Text(
           "${number}x",
           style: const TextStyle(
               color: Color.fromARGB(255, 70, 70, 70), fontSize: 20),
         ),
-      ),
-      const SizedBox(height: 5), // Kleiner Abstand
-      Image.asset(
-        imagePath,
-        width: 60,
-        height: 60,
-        fit: BoxFit.contain,
-      ),
-    ],
+        const SizedBox(width: 5), // Kleiner Abstand
+        Image.asset(
+          imagePath,
+          width: 50,
+          height: 50,
+          fit: BoxFit.contain,
+        ),
+      ],
+    ),
   );
 }

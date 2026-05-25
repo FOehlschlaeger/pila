@@ -29,7 +29,7 @@ class ReloadArea extends StatelessWidget {
             'Reload for new level',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 10.0,
+              fontSize: 12.0,
               fontWeight: FontWeight.bold,
             ),
           ),

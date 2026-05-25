@@ -24,7 +24,7 @@ class MenuAboutScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "This app is developed using the Flutter framework.\n",
+                        "This app is developed using Dart and the Flutter framework.\n",
                       ),
                       Text(
                         "The source code is available on GitHub:\n",
