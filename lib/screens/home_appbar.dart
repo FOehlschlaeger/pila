@@ -21,7 +21,7 @@ class PilaAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       // --- App Icon ---
       title: Image.asset(
-        'assets/images/pila-icon.png',
+        'assets/images/pila-icon_minimal.png',
         height: 45,
       ),
 

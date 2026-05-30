@@ -27,7 +27,7 @@ class PilaDrawer extends StatelessWidget {
               ),
             ),
             child: Image.asset(
-              'assets/images/pila-icon.png',
+              'assets/images/pila-icon_minimal.png',
             ),
           ),
 
