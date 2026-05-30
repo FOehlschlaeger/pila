@@ -10,7 +10,7 @@ This cross-platform app is developed for Android.
 >  _The name "PILA" originates from spanish and refers to "stack" or "pile", which corresponds to the digit stacks which have to be zero-ed to clear the level successfully._
 
 ### How to play
-<img src="./assets/images/pila-example-screen.png" width="300">
+<img src="./assets/images/pila-example-screen.png" width="200">
 
 > _Main Screen_
 
