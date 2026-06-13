@@ -1,5 +1,5 @@
 <p float="center">
-    <img height="90" src="./assets/images/pila-icon_and_name.png">
+    <img height="90" src="./assets/images/pila-icon_and_name_orange_2.png">
 </p>
 
 ---
