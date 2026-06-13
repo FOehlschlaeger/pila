@@ -51,7 +51,7 @@ void main() {
       expect(resultFirstSubstraction, firstSubstraction);
 
       // Check if stage would be clear, should fail
-      final bool stageNotClear = GridOperations.checkStageClear(resultFirstSubstraction);
+      final bool stageNotClear = GridOperations.stageClear(resultFirstSubstraction);
       expect(stageNotClear, false);
 
       // Second substraction
@@ -62,7 +62,7 @@ void main() {
       expect(resultSecondSubstraction, secondSubstraction);
 
       // Check if stage is clear, should work
-      final bool stageClear = GridOperations.checkStageClear(resultSecondSubstraction);
+      final bool stageClear = GridOperations.stageClear(resultSecondSubstraction);
       expect(stageClear, true);
     });
 

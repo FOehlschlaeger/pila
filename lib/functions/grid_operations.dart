@@ -145,8 +145,9 @@ class GridOperations {
     [0, 0, 0, 0]
   ]
   */
-  static bool checkStageClear(Tetromino tetromino) {
+  static bool stageClear(Tetromino tetromino) {
     Tetromino emptyStage = Tetromino();
+    print("[stageClear] - emptyStage: $emptyStage");
 
     // First check dimensions of given tetromino
     if (emptyStage.length != tetromino.length ||
@@ -163,6 +164,19 @@ class GridOperations {
       }
     }
     // All entries match each other
+    return true;
+  }
+
+  static bool gridsubtractionAllowed({required Tetromino gridA, required Tetromino gridB}) {
+    // Check if subtracting the grids does not result in negative numbers in grid, otherwise operation is not permitted
+    for (int i = 0; i < gridA.length; i++) {
+      for (int j = 0; j < gridA[i].length; j++) {
+        if (gridA[i][j] - gridB[i][j] < 0) {
+          return false;
+        }
+      }
+    }
+
     return true;
   }
 }

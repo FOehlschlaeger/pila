@@ -26,10 +26,10 @@ class ReloadArea extends StatelessWidget {
             ],
           ),
           child: const Text(
-            'Reload for new level',
+            'For new level pull down grid',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 10.0,
+              fontSize: 12.0,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pila/screens/home_appbar.dart';
 import 'package:pila/screens/home_body.dart';
-import 'package:pila/screens/home_menu.dart';
+// import 'package:pila/screens/home_menu.dart';
 
 class PilaHomeScreen extends StatelessWidget {
   const PilaHomeScreen({
@@ -15,7 +15,7 @@ class PilaHomeScreen extends StatelessWidget {
       appBar: PilaAppBar(),
     
       // --- Settings drawer ---
-      drawer: PilaDrawer(),
+      // drawer: PilaDrawer(),
     
       // --- Central area (Body) ---
       body: PilaBody(),

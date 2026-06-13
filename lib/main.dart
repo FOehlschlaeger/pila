@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pila/screens/home.dart';
 
 void main() {
+  // Keep orientation portaitUp if device orientation changes
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Initialize application
   runApp(const Pila());
 }
 

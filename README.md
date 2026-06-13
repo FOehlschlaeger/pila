@@ -1,14 +1,16 @@
-<img src="./assets/images/pila-icon.png" width="200">
+<p float="center">
+    <img height="90" src="./assets/images/pila-icon_and_name_orange_2.png">
+</p>
 
-## PILA
+---
 In this [Flutter](https://flutter.dev/) game you have to reduce digits in the grid to zero to clear the level. 
 
-This cross-platform app is developed for Android and iOS devices.
+This cross-platform app is developed for Android.
 
 >  _The name "PILA" originates from spanish and refers to "stack" or "pile", which corresponds to the digit stacks which have to be zero-ed to clear the level successfully._
 
 ### How to play
-<img src="./assets/images/pila-example-screen.png" width="300">
+<img src="./assets/images/pila-example-screen.png" width="200">
 
 > _Main Screen_
 

@@ -12,13 +12,21 @@ class Tetromino with ListMixin<List<int>> {
   Tetromino([int rows = defaultRows, int columns = defaultColumns])
       : _grid = List.generate(
           rows, 
-          (i) => List.filled(columns, 0)
+          (i) => List.filled(columns, 0),
+          growable: true
         );
 
-  Tetromino.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  // Tetromino.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
+  Tetromino.fromExistingGrid(List<List<int>> grid) 
+    : _grid = grid.map((row) => List<int>.from(row, growable: true)).toList(growable: true);
 
   Tetromino copyWith(List<List<int>> newGrid) {
     return Tetromino.fromExistingGrid(newGrid);
+  }
+
+  Tetromino copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return Tetromino.fromExistingGrid(gridCopy);
   }
 
   @override
@@ -78,6 +86,12 @@ class TetrominoI extends Tetromino {
   TetrominoI copyWith(List<List<int>> newGrid) {
     return TetrominoI.fromGrid(newGrid);
   }
+
+  @override
+  TetrominoI copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return TetrominoI.fromGrid(gridCopy);
+  }
 }
 
 // Tetromino J
@@ -108,6 +122,12 @@ class TetrominoJ extends Tetromino {
   @override
   TetrominoJ copyWith(List<List<int>> newGrid) {
     return TetrominoJ.fromGrid(newGrid);
+  }
+
+  @override
+  TetrominoJ copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return TetrominoJ.fromGrid(gridCopy);
   }
 }
 
@@ -140,6 +160,12 @@ class TetrominoL extends Tetromino {
   TetrominoL copyWith(List<List<int>> newGrid) {
     return TetrominoL.fromGrid(newGrid);
   }
+
+  @override
+  TetrominoL copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return TetrominoL.fromGrid(gridCopy);
+  }
 }
 
 // Tetromino O
@@ -170,6 +196,12 @@ class TetrominoO extends Tetromino {
   @override
   TetrominoO copyWith(List<List<int>> newGrid) {
     return TetrominoO.fromGrid(newGrid);
+  }
+
+  @override
+  TetrominoO copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return TetrominoO.fromGrid(gridCopy);
   }
 }
 
@@ -202,6 +234,12 @@ class TetrominoS extends Tetromino {
   TetrominoS copyWith(List<List<int>> newGrid) {
     return TetrominoS.fromGrid(newGrid);
   }
+
+  @override
+  TetrominoS copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return TetrominoS.fromGrid(gridCopy);
+  }
 }
 
 // Tetromino T
@@ -233,6 +271,12 @@ class TetrominoT extends Tetromino {
   TetrominoT copyWith(List<List<int>> newGrid) {
     return TetrominoT.fromGrid(newGrid);
   }
+
+  @override
+  TetrominoT copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return TetrominoT.fromGrid(gridCopy);
+  }
 }
 
 // Tetromino Z
@@ -263,5 +307,11 @@ class TetrominoZ extends Tetromino {
   @override
   TetrominoZ copyWith(List<List<int>> newGrid) {
     return TetrominoZ.fromGrid(newGrid);
+  }
+
+  @override
+  TetrominoZ copy() {
+    List<List<int>> gridCopy = _grid.map((row) => List<int>.from(row)).toList();
+    return TetrominoZ.fromGrid(gridCopy);
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
-import 'package:pila/config/numberColors.dart';
+import 'package:pila/config/colors.dart';
+import 'package:pila/functions/grid_operations.dart';
+import 'package:pila/functions/tetromino_operations.dart' as tetrominoOperations;
+import 'package:pila/models/level_state.dart';
+import 'package:pila/models/tetromino.dart';
 
 class GameGridScreen extends StatefulWidget {
   const GameGridScreen({super.key});
@@ -11,130 +14,532 @@ class GameGridScreen extends StatefulWidget {
 }
 
 class _GameGridScreenState extends State<GameGridScreen> {
-  // The state of the grid: A list of 16 numbers
-  late List<int> _gridNumbers;
-  final int _gridSize = 4; // 4x4 grid
+  late LevelState currentState = LevelState();
+  late List<LevelState> levelStateHistory = [];
+  int get _gridColumns => currentState['initial_state'].length;
+  int get _gridRows => currentState['initial_state'][0].length;
+  var gridOperations = GridOperations();
+
+  Offset? _lastTriggerPos;
+
+  // Wie viele Pixel muss der Finger wandern, um einen "Schritt" auszulösen?
+  // Kleinerer Wert = Höhere Sensibilität (häufigere Aufrufe)
+  final double _threshold = 30.0;
+
+  void _handleDragUpdate(Offset currentPos) {
+    if (_lastTriggerPos == null) {
+      _lastTriggerPos = currentPos;
+      return;
+    }
+
+    // Berechne die Differenz zum letzten Trigger-Punkt
+    double dx = currentPos.dx - _lastTriggerPos!.dx;
+    double dy = currentPos.dy - _lastTriggerPos!.dy;
+
+    // Prüfen, ob die horizontale oder vertikale Bewegung die Schwelle überschreitet
+    if (dx.abs() >= _threshold) {
+      if (dx > 0) {
+        _gestureShiftRight(currentState);
+      } else {
+        _gestureShiftLeft(currentState);
+      }
+      // WICHTIG: Den Referenzpunkt aktualisieren
+      _lastTriggerPos = currentPos;
+    } else if (dy.abs() >= _threshold) {
+      if (dy > 0) {
+        _gestureShiftDown(currentState);
+      } else {
+        _gestureShiftUp(currentState);
+      }
+      // WICHTIG: Den Referenzpunkt aktualisieren
+      _lastTriggerPos = currentPos;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _initializeGrid();
+    currentState = currentState.initLevelState();
+    levelStateHistory = [];
   }
-
-  // Initializes the grid with random numbers or a random state
-  void _initializeGrid() {
-    _gridNumbers = List.generate(
-        _gridSize * _gridSize, (index) => Random().nextInt(5)); // number range
-    // Optional: Setting a predefined state
-    // _gridNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-  }
-
-  // Method to change a number in the grid, if selected
-  void _changeNumber(int index) {
+  
+  Future createNewState() async {
     setState(() {
-      // Example: INcrease the number by 1, or set a new random number
-      _gridNumbers[index] = (_gridNumbers[index] - 1) %
-          10; // Increase number or reset back to 0 at reaching 10
+      currentState = currentState.initLevelState();
+      levelStateHistory = [];
     });
-    // Here a complex game logic can be appied,
-    // i.e. check, if an action is valid, giving points etc.
-    print('Feld $index wurde geklickt. Neue Zahl: ${_gridNumbers[index]}');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(duration: Duration(milliseconds: 500), content: Text('New level created!')),
+    );
   }
 
   // Helper method to reset the game
-  void _resetGame() {
+  void _resetGame(LevelState lvlstate, List<LevelState> levelStateHistory) {
     setState(() {
-      _initializeGrid();
+      currentState = LevelState.resetState(lvlstate);
+      levelStateHistory = [];
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Spiel zurückgesetzt!')),
+      const SnackBar(duration: Duration(milliseconds: 500), content: Text('Level is reset!')),
     );
+  }
+
+  void _undoLastApply(LevelState lvlstate, List<LevelState> levelStateHistory) {
+    setState(() {
+      // currentState = LevelState.revertState(levelStateHistory);
+      if (levelStateHistory.isNotEmpty) {
+        print("[_undoLastApply] currentState : $currentState");
+        print("[_undoLastApply] levelStateHistory : $levelStateHistory");
+        currentState = levelStateHistory.last;
+        levelStateHistory.removeLast();
+        print("[_undoLastApply] currentState : $currentState");
+        print("[_undoLastApply] levelStateHistory : $levelStateHistory");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(duration: Duration(milliseconds: 500), content: Text('_undoLastApply: undo previous apply')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(duration: Duration(milliseconds: 500), content: Text('_undoLastApply: nothing to revert')),
+        );
+      }
+    });
+  }
+
+  void _applyTetromino(
+      LevelState lvlstate, List<LevelState> levelStateHistory) {
+    setState(() {
+      Tetromino prevState = lvlstate['current_state'];
+      print("[_applyTetromino] levelStateHistory before : $levelStateHistory");
+      // add current state to state history as independent copy before applying
+      LevelState cloneCurrentLevelState = lvlstate.clone();
+      levelStateHistory.add(cloneCurrentLevelState);
+      print("[_applyTetromino] levelStateHistory after : $levelStateHistory");
+      lvlstate = LevelState.applyState(lvlstate);
+      if (prevState == lvlstate['current_state']) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              duration: Duration(milliseconds: 500), content: Text('_applyTetromino: Apply not possible, at least one field is already cleared! ')),
+        );
+      }
+
+      // check if state is clear after apply operation
+      if (GridOperations.stageClear(lvlstate['current_state'])) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              duration: Duration(milliseconds: 500), content: Text('_applyTetromino: level state cleared! ')),
+        );
+        showDialog(
+          context: context, 
+          builder: (BuildContext context) {
+            return SimpleDialog(
+              title: Center(
+                child: const Text(
+                  "Congratulations!",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
+              ),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: const Text(
+                          "You have finished the level!\n",
+                        ),
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            createNewState();
+                            Navigator.pop(context);
+                          }, 
+                          style: ElevatedButton.styleFrom(
+                            elevation: 3.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          child: const Text('Continue'),
+                        )
+                      )
+                    ],
+                  )
+                )
+              ]
+            );
+          }
+        );
+      }
+    });
+  }
+
+  void _rotateTetromino(LevelState lvlstate) {
+    print("_rotateTetromino: rotate selected tetromino");
+    setState(() {
+      lvlstate['selected_tile'] =
+          tetrominoOperations.rotate<Tetromino>(lvlstate['selected_tile']);
+    });
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(duration: Duration(milliseconds: 500), content: Text('"_rotateTetromino: rotate selected tetromino')),
+    // );
+  }
+
+  void _gestureShiftUp(LevelState lvlstate) {
+    print("_gestureShiftUp: shift selected tetromino upwards");
+    setState(() {
+      lvlstate['selected_tile'] =
+          tetrominoOperations.shiftUp<Tetromino>(lvlstate['selected_tile']);
+      print("_gestureShiftUp: $lvlstate");
+    });
+  }
+
+  void _gestureShiftDown(LevelState lvlstate) {
+    print("_gestureShiftDown: shift selected tetromino downwards");
+    setState(() {
+      lvlstate['selected_tile'] =
+          tetrominoOperations.shiftDown<Tetromino>(lvlstate['selected_tile']);
+      print("_gestureShiftDown: $lvlstate");
+    });
+  }
+
+  void _gestureShiftLeft(LevelState lvlstate) {
+    print("_gestureShiftLeft: shift selected tetromino left");
+    setState(() {
+      lvlstate['selected_tile'] =
+          tetrominoOperations.shiftLeft<Tetromino>(lvlstate['selected_tile']);
+      print("_gestureShiftLeft: $lvlstate");
+    });
+  }
+
+  void _gestureShiftRight(LevelState lvlstate) {
+    print("_gestureShiftRight: shift selected tetromino right");
+    setState(() {
+      lvlstate['selected_tile'] =
+          tetrominoOperations.shiftRight<Tetromino>(lvlstate['selected_tile']);
+      print("_gestureShiftRight: $lvlstate");
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      /*
-      appBar: AppBar(
-        title: const Text(
-          'Zahlenraster-Spiel',
-          // style: TextStyle(color: Colors.white)
-        ),
-        // backgroundColor: Colors.deepPurple, // Passend zum Theme
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
-            onPressed: _resetGame,
-            tooltip: 'Spiel zurücksetzen',
-          ),
-        ],
-      ),
-      */
-      body: Container(
-        decoration:  const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 155, 182, 212),
-              Color.fromARGB(255, 255, 255, 255)
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: AspectRatio(
-              aspectRatio: 1, // square grid
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 190, 190, 190).withOpacity(0.1), // slighty transparency
-                  borderRadius: BorderRadius.circular(15.0),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 70, 70, 70).withOpacity(0.3), width: 2),
-                ),
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: _gridSize * _gridSize, // 16 fields
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: _gridSize, // 4 columns
-                    crossAxisSpacing: 8.0, // distance between columns
-                    mainAxisSpacing: 8.0, // distance between rows
-                  ),
-                  itemBuilder: (context, index) {
-                    // Each field is a GestureDetector, to recognize clicks
-                    return GestureDetector(
-                      onTap: () =>
-                          _changeNumber(index), // Calls logic at click
-                      child: Container(
-                        decoration: BoxDecoration(
-                          // color: Colors.blueGrey.shade700.withOpacity(0.8), // Background color of the field
-                          color: getNumberColors(_gridNumbers[index]), // Background color of the field
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          '${_gridNumbers[index]}', // Shows the actual number
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontSize: 32.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+    return GestureDetector(
+      onPanStart: (details) {
+        // Startpunkt setzen
+        _lastTriggerPos = details.localPosition;
+      },
+      onPanUpdate: (details) {
+        // Logik bei jeder Fingerbewegung prüfen
+        _handleDragUpdate(details.localPosition);
+      },
+      onPanEnd: (_) {
+        // Reset beim Loslassen
+        _lastTriggerPos = null;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white.withValues(alpha: 0.0),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            createNewState();
+          },
+          child: Column(
+            children: [
+              Expanded(
+                flex: 8,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: AspectRatio(
+                    aspectRatio: 1, // square grid
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 190, 190, 190)
+                            .withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(15.0),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 70, 70, 70)
+                                .withValues(alpha: 0.3),
+                            width: 2),
                       ),
-                    );
-                  },
+                      child: GridView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        itemCount: _gridColumns * _gridRows,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _gridRows,
+                          crossAxisSpacing: 8.0, // distance between columns
+                          mainAxisSpacing: 8.0, // distance between rows
+                        ),
+                        itemBuilder: (context, index) {
+                          int indexRow = (index / _gridRows).floor();
+                          int indexColumn = index % _gridColumns;
+          
+                          // print("INDEX: $index");
+                          // List<int> currentStateIndex = currentState['current_state'][indexRow];
+                          // print(currentStateIndex);
+                          int currentIndex = currentState["current_state"]
+                              [indexRow][indexColumn];
+                          // print(currentIndex);
+          
+                          // Each field is a GestureDetector, to recognize clicks
+                          return GestureDetector(
+                            // onVerticalDragDown: () => _resetGame(),
+                            onDoubleTap: () =>
+                                // _changeNumber(index), // Calls logic at click
+                                // _resetGame(index),
+                                _applyTetromino(currentState, levelStateHistory),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: getNumberColors(
+                                    currentIndex), // Background color of the field
+                                border: Border.all(
+                                  color: currentState["selected_tile"][indexRow]
+                                              [indexColumn] ==
+                                          1
+                                      ? borderColorCurrentSelection
+                                      : Colors.transparent,
+                                  width: borderWidthCurrentSelection,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                currentIndex.toString(),
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ),
+              // TetrominoButtons
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 14.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildImageWithNumber('assets/images/tetromino-I.png',
+                              currentState, TetrominoI()),
+                          _buildImageWithNumber('assets/images/tetromino-O.png',
+                              currentState, TetrominoO()),
+                          _buildImageWithNumber('assets/images/tetromino-J.png',
+                              currentState, TetrominoJ()),
+                          _buildImageWithNumber('assets/images/tetromino-L.png',
+                              currentState, TetrominoL()),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildImageWithNumber('assets/images/tetromino-S.png',
+                              currentState, TetrominoS()),
+                          _buildImageWithNumber('assets/images/tetromino-Z.png',
+                              currentState, TetrominoZ()),
+                          _buildImageWithNumber('assets/images/tetromino-T.png',
+                              currentState, TetrominoT()),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // ActionButtons
+              Expanded(
+                flex: 3,
+                child: Container(
+                  // alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 255, 255, 255),
+                        Color.fromARGB(255, 148, 148, 148)
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.fast_rewind),
+                            tooltip: "Revert last apply, hold to reset",
+                            onPressed: (() => _undoLastApply(currentState, levelStateHistory)),
+                            onLongPress: (() =>
+                                _resetGame(currentState, levelStateHistory)),
+                            iconSize: 60,
+                            color: iconColor,
+                            highlightColor: iconColorHighlight
+                          ),
+                          Text(
+                            'Revert',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Hold to reset',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 10.0,
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.vertical_align_bottom),
+                            tooltip: "Apply tetromino tile",
+                            onPressed: (() => _applyTetromino(
+                                currentState, levelStateHistory)),
+                            iconSize: 60,
+                            color: iconColor,
+                            highlightColor: iconColorHighlight,
+                          ),
+                          Text(
+                            'Apply',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.rotate_right),
+                            tooltip: "Rotate by 90 degrees",
+                            onPressed: (() => _rotateTetromino(currentState)),
+                            iconSize: 60,
+                            color: iconColor,
+                            highlightColor: iconColorHighlight,
+                          ),
+                          Text(
+                            'Rotate',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageWithNumber(
+      String imagePath, LevelState lvlstate, Tetromino selectedTetromino) {
+    final String key = 'counter_${selectedTetromino.runtimeType}';
+    final int number = lvlstate[key]?['current'] ?? 0;
+
+    bool isSelected = false;
+    Color selectionColor = Colors.transparent;
+    // bool isSelected = lvlstate['selected_tile'] == selectedTetromino;
+    print("isSelected: $isSelected");
+    bool hasZeroCounter = lvlstate[key]['initial'] == 0 || number == 0;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: InkWell(
+        onTap: () {
+          if (!hasZeroCounter) {
+            print("Klick auf: ${selectedTetromino.runtimeType}");
+            lvlstate['selected_tile'] = selectedTetromino;
+
+            isSelected = lvlstate['selected_tile'] == selectedTetromino;
+            print("isSelected onTap: $isSelected");
+            print(
+                "_buildImageWithNumber: lvlstate_selected_tile: ${lvlstate['selected_tile']}");
+            print(
+                "_buildImageWithNumber: lvlstate_selectedtetromino: $selectedTetromino");
+            setState(() {
+              lvlstate['selected_tile'] = selectedTetromino;
+              selectionColor = Color.fromARGB(255, 0, 255, 13);
+            });
+
+            print(
+                "Neues selected_tile: ${lvlstate['selected_tile'].runtimeType}");
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: hasZeroCounter
+                ? const Color.fromARGB(6, 150, 150, 150) // Color.fromARGB(255, 175, 77, 77).withValues(alpha: 0.2)
+                : borderColorCurrentSelection.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              // color: const Color.fromARGB(255, 0, 255, 13),
+              color: isSelected ? selectionColor : Colors.transparent,
+              width: 2,
             ),
+          ),
+          padding: const EdgeInsets.all(4),
+          child: Row(
+            mainAxisSize: MainAxisSize
+                .min, // Verhindert, dass die Row den ganzen Platz einnimmt
+            children: [
+              Text(
+                "${number}x",
+                style: TextStyle(
+                  // color: isSelected ? Colors.white : const Color.fromARGB(255, 70, 70, 70),
+                  color: Colors.white,
+                  fontSize: 20,
+                  // fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(width: 5),
+              Image.asset(
+                imagePath,
+                width: 50,
+                height: 50,
+                fit: BoxFit.contain,
+              ),
+            ],
           ),
         ),
       ),
