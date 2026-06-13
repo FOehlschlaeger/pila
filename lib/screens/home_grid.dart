@@ -62,12 +62,20 @@ class _GameGridScreenState extends State<GameGridScreen> {
     currentState = currentState.initLevelState();
     levelStateHistory = [];
   }
+  
+  Future createNewState() async {
+    setState(() {
+      currentState = currentState.initLevelState();
+      levelStateHistory = [];
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(duration: Duration(milliseconds: 500), content: Text('New level created!')),
+    );
+  }
 
   // Helper method to reset the game
   void _resetGame(LevelState lvlstate, List<LevelState> levelStateHistory) {
     setState(() {
-      // initState();
-      // currentState = currentState.initLevelState();
       currentState = LevelState.resetState(lvlstate);
       levelStateHistory = [];
     });
@@ -119,6 +127,56 @@ class _GameGridScreenState extends State<GameGridScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               duration: Duration(milliseconds: 500), content: Text('_applyTetromino: level state cleared! ')),
+        );
+        showDialog(
+          context: context, 
+          builder: (BuildContext context) {
+            return SimpleDialog(
+              title: Center(
+                child: const Text(
+                  "Congratulations!",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
+              ),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: const Text(
+                          "You have finished the level!\n",
+                        ),
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            createNewState();
+                            Navigator.pop(context);
+                          }, 
+                          style: ElevatedButton.styleFrom(
+                            elevation: 3.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          child: const Text('Continue'),
+                        )
+                      )
+                    ],
+                  )
+                )
+              ]
+            );
+          }
         );
       }
     });
@@ -188,218 +246,226 @@ class _GameGridScreenState extends State<GameGridScreen> {
       },
       child: Scaffold(
         backgroundColor: Colors.white.withValues(alpha: 0.0),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 8,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: AspectRatio(
-                  aspectRatio: 1, // square grid
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 190, 190, 190)
-                          .withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(15.0),
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 70, 70, 70)
-                              .withValues(alpha: 0.3),
-                          width: 2),
-                    ),
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      itemCount: _gridColumns * _gridRows,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: _gridRows,
-                        crossAxisSpacing: 8.0, // distance between columns
-                        mainAxisSpacing: 8.0, // distance between rows
+        body: RefreshIndicator(
+          onRefresh: () async {
+            createNewState();
+          },
+          child: Column(
+            children: [
+              Expanded(
+                flex: 8,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: AspectRatio(
+                    aspectRatio: 1, // square grid
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 190, 190, 190)
+                            .withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(15.0),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 70, 70, 70)
+                                .withValues(alpha: 0.3),
+                            width: 2),
                       ),
-                      itemBuilder: (context, index) {
-                        int indexRow = (index / _gridRows).floor();
-                        int indexColumn = index % _gridColumns;
-
-                        // print("INDEX: $index");
-                        // List<int> currentStateIndex = currentState['current_state'][indexRow];
-                        // print(currentStateIndex);
-                        int currentIndex = currentState["current_state"]
-                            [indexRow][indexColumn];
-                        // print(currentIndex);
-
-                        // Each field is a GestureDetector, to recognize clicks
-                        return GestureDetector(
-                          // onVerticalDragDown: () => _resetGame(),
-                          onDoubleTap: () =>
-                              // _changeNumber(index), // Calls logic at click
-                              // _resetGame(index),
-                              _applyTetromino(currentState, levelStateHistory),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: getNumberColors(
-                                  currentIndex), // Background color of the field
-                              border: Border.all(
-                                color: currentState["selected_tile"][indexRow]
-                                            [indexColumn] ==
-                                        1
-                                    ? borderColorCurrentSelection
-                                    : Colors.transparent,
-                                width: borderWidthCurrentSelection,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.3),
-                                  spreadRadius: 1,
-                                  blurRadius: 3,
-                                  offset: const Offset(0, 2),
+                      child: GridView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        itemCount: _gridColumns * _gridRows,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _gridRows,
+                          crossAxisSpacing: 8.0, // distance between columns
+                          mainAxisSpacing: 8.0, // distance between rows
+                        ),
+                        itemBuilder: (context, index) {
+                          int indexRow = (index / _gridRows).floor();
+                          int indexColumn = index % _gridColumns;
+          
+                          // print("INDEX: $index");
+                          // List<int> currentStateIndex = currentState['current_state'][indexRow];
+                          // print(currentStateIndex);
+                          int currentIndex = currentState["current_state"]
+                              [indexRow][indexColumn];
+                          // print(currentIndex);
+          
+                          // Each field is a GestureDetector, to recognize clicks
+                          return GestureDetector(
+                            // onVerticalDragDown: () => _resetGame(),
+                            onDoubleTap: () =>
+                                // _changeNumber(index), // Calls logic at click
+                                // _resetGame(index),
+                                _applyTetromino(currentState, levelStateHistory),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: getNumberColors(
+                                    currentIndex), // Background color of the field
+                                border: Border.all(
+                                  color: currentState["selected_tile"][indexRow]
+                                              [indexColumn] ==
+                                          1
+                                      ? borderColorCurrentSelection
+                                      : Colors.transparent,
+                                  width: borderWidthCurrentSelection,
                                 ),
-                              ],
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              currentIndex.toString(),
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 255, 255, 255),
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold,
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                currentIndex.toString(),
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            // TetrominoButtons
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 14.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildImageWithNumber('assets/images/tetromino-I.png',
-                            currentState, TetrominoI()),
-                        _buildImageWithNumber('assets/images/tetromino-O.png',
-                            currentState, TetrominoO()),
-                        _buildImageWithNumber('assets/images/tetromino-J.png',
-                            currentState, TetrominoJ()),
-                        _buildImageWithNumber('assets/images/tetromino-L.png',
-                            currentState, TetrominoL()),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildImageWithNumber('assets/images/tetromino-S.png',
-                            currentState, TetrominoS()),
-                        _buildImageWithNumber('assets/images/tetromino-Z.png',
-                            currentState, TetrominoZ()),
-                        _buildImageWithNumber('assets/images/tetromino-T.png',
-                            currentState, TetrominoT()),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // ActionButtons
-            Expanded(
-              flex: 3,
-              child: Container(
-                // alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 255, 255, 255),
-                      Color.fromARGB(255, 148, 148, 148)
+              // TetrominoButtons
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 14.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildImageWithNumber('assets/images/tetromino-I.png',
+                              currentState, TetrominoI()),
+                          _buildImageWithNumber('assets/images/tetromino-O.png',
+                              currentState, TetrominoO()),
+                          _buildImageWithNumber('assets/images/tetromino-J.png',
+                              currentState, TetrominoJ()),
+                          _buildImageWithNumber('assets/images/tetromino-L.png',
+                              currentState, TetrominoL()),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildImageWithNumber('assets/images/tetromino-S.png',
+                              currentState, TetrominoS()),
+                          _buildImageWithNumber('assets/images/tetromino-Z.png',
+                              currentState, TetrominoZ()),
+                          _buildImageWithNumber('assets/images/tetromino-T.png',
+                              currentState, TetrominoT()),
+                        ],
+                      ),
                     ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                      children: [
-                        IconButton(
+              ),
+              // ActionButtons
+              Expanded(
+                flex: 3,
+                child: Container(
+                  // alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 255, 255, 255),
+                        Color.fromARGB(255, 148, 148, 148)
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        children: [
+                          IconButton(
                             icon: const Icon(Icons.fast_rewind),
                             tooltip: "Revert last apply, hold to reset",
                             onPressed: (() => _undoLastApply(currentState, levelStateHistory)),
                             onLongPress: (() =>
                                 _resetGame(currentState, levelStateHistory)),
                             iconSize: 60,
-                            color: Color.fromARGB(255, 80, 80, 80),
-                            highlightColor: Color.fromARGB(255, 240, 240, 240)),
-                        Text(
-                          'Revert',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
+                            color: iconColor,
+                            highlightColor: iconColorHighlight
                           ),
-                        ),
-                        Text(
-                          'Hold to reset',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 10.0,
+                          Text(
+                            'Revert',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
+                          Text(
+                            'Hold to reset',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 10.0,
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
                             icon: const Icon(Icons.vertical_align_bottom),
                             tooltip: "Apply tetromino tile",
                             onPressed: (() => _applyTetromino(
                                 currentState, levelStateHistory)),
                             iconSize: 60,
-                            color: Color.fromARGB(255, 80, 80, 80),
-                            highlightColor: Color.fromARGB(255, 240, 240, 240)),
-                        Text(
-                          'Apply',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
+                            color: iconColor,
+                            highlightColor: iconColorHighlight,
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
+                          Text(
+                            'Apply',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
                             icon: const Icon(Icons.rotate_right),
                             tooltip: "Rotate by 90 degrees",
                             onPressed: (() => _rotateTetromino(currentState)),
                             iconSize: 60,
-                            color: Color.fromARGB(255, 80, 80, 80),
-                            highlightColor: Color.fromARGB(255, 240, 240, 240)),
-                        Text(
-                          'Rotate',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
+                            color: iconColor,
+                            highlightColor: iconColorHighlight,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          Text(
+                            'Rotate',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -443,7 +509,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
           decoration: BoxDecoration(
             color: hasZeroCounter
                 ? const Color.fromARGB(6, 150, 150, 150) // Color.fromARGB(255, 175, 77, 77).withValues(alpha: 0.2)
-                : borderColorCurrentSelection.withValues(alpha: 0.4),
+                : borderColorCurrentSelection.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               // color: const Color.fromARGB(255, 0, 255, 13),
