@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// [HelpDialog]
+/// 
+/// Dialog showing the help page providing basic information on how to play.
 class HelpDialog extends StatelessWidget {
   const HelpDialog({
     super.key,
@@ -21,40 +24,31 @@ class HelpDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "In this game you have to reduce all digits in the 4x4 grid down to zero (white fields).\n",
+                "In this game you have to reduce the digits in the grid down to zero (white field).\n",
               ),
               const Text(
-                "The 4x4 grid and Tetromino tiles",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                )
+                "To achieve this use the different Tetromino tiles below the grid. Each tile covers four fields in the grid.",
               ),
               const Text(
-                "To achieve this use the seven different tetromino tiles below the grid. Each tile covers four digits (or fields) in the grid.",
+                "The digit of a field in the grid shows how many times this field is covered by a tile.\n",
               ),
               const Text(
-                "If you apply one selected tile, the four covered digits in the grid are subtracted by one.\n",
+                "If you apply the selected tile, each of the four fields covered by this tile is reduced by one.\n",
               ),
               const Text(
-                "Each level consists of a specific set of tetromino tiles. The number of each tile used is indicated by the number preceding it.\n",
+                "Each level consists of a specific set of Tetromino tiles. The number in front of the tile indicates how many times this tile is used.\n",
               ),
               const Text(
-                "Actions",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                )
+                "Move and Rotate:\nYou can move the selected tile by swiping horizontally or vertically in the button area (below the grid). You can rotate it using the Rotate button.\n",
               ),
               const Text(
-                "You can move and adjust the selected tile by swiping horizontally or vertically in the button area of the screen. You can also rotate it using the Rotate button.\n",
+                "Apply:\nReduce the marked fields covered by the selected tile.\n",
               ),
               const Text(
-                "To apply the tile in the grid (subtract), use the Apply button.\n",
+                "Revert:\nRevert the previous Apply. Hold this button to reset the entire level.\n",
               ),
               const Text(
-                "If you want to revert the last step, use the Revert button. Hold this button to reset the entire level.\n",
-              ),
-              const Text(
-                "To load a new level just pull down the grid or clear the current level.",
+                "New level:\nTo load a new level pull down the grid or finish the current level.",
               ),
             ],
           ),

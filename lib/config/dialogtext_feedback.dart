@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pila/utils/clickable_text_url.dart';
 
+/// [FeedbackDialog]
+/// 
+/// Dialog to show information about giving feedback and the development.
+/// This includes also links to the project page.
 class FeedbackDialog extends StatelessWidget {
   const FeedbackDialog({
     super.key,

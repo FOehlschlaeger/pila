@@ -1,44 +1,46 @@
 import 'package:pila/config/defaults.dart';
 import 'package:pila/models/tetromino.dart';
+import 'package:pila/utils/logger.dart';
 
+/// [GridOperations]
+/// 
+/// This class defines operations performed on grids in general.
 class GridOperations {
-  // Size of square grid
   static final int gridSize = gridLength;
 
-  /*
-   * Subtracts two 4x4 grids (Tetromino) element-wise.
-   * 
-   * * @param gridA The first grid.
-   * @param gridB The second grid.
-   * @return New grid of type Tetromino with results of the subtraction operation of gridA and gridB.
-   * 
-   * GridA
-  [
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4]
-  ]
-   * GridB
-  [
-    [0, 0, 1, 0],
-    [0, 0, 1, 0],
-    [0, 0, 1, 0],
-    [0, 0, 1, 0]
-  ]
-   * resultGrid
-  [
-    [1, 2, 2, 4],
-    [1, 2, 2, 4],
-    [1, 2, 2, 4],
-    [1, 2, 2, 4]
-  ]
-   */
-  static Tetromino subtractGrids({required Tetromino gridA, required Tetromino gridB}) {
-    // Tetromino resultGrid = Tetromino();
+  /// [subtractGrids]
+  /// 
+  /// This method substracts the two input grids from each other element-wise.
+  /// @param gridA The first grid.
+  /// @param gridB The second grid.
+  /// @return New grid of type Tetromino with results of the subtraction operation of gridA and gridB.
+  /// 
+  /// Example:
+  /// GridA
+  /// [
+  ///   [1, 2, 3, 4],
+  ///   [1, 2, 3, 4],
+  ///   [1, 2, 3, 4],
+  ///   [1, 2, 3, 4],
+  /// ]
+  ///  * GridB
+  /// [
+  ///   [0, 0, 1, 0],
+  ///   [0, 0, 1, 0],
+  ///   [0, 0, 1, 0],
+  ///   [0, 0, 1, 0],
+  /// ]
+  ///  * resultGrid
+  /// [
+  ///   [1, 2, 2, 4],
+  ///   [1, 2, 2, 4],
+  ///   [1, 2, 2, 4],
+  ///   [1, 2, 2, 4],
+  /// ]
+  static Tetromino subtractGrids(
+      {required Tetromino gridA, required Tetromino gridB}) {
     List<List<int>> resultGrid = [];
 
-    // Check for same size
     if (gridA.length != gridSize || gridB.length != gridSize) {
       throw ArgumentError('Both grids must have the same size of $gridSize.');
     }
@@ -48,59 +50,58 @@ class GridOperations {
       List<int> rowA = gridA[i];
       List<int> rowB = gridB[i];
 
-      // Check for size
       if (rowA.length != gridSize || rowB.length != gridSize) {
-        throw ArgumentError('All rows must have the same number of rows of $gridSize.');
+        throw ArgumentError(
+            'All rows must have the same number of rows of $gridSize.');
       }
 
       List<int> newRow = [];
-
       // Inner loop: iteration over columns
       for (int j = 0; j < gridSize; j++) {
         int difference = rowA[j] - rowB[j];
         newRow.add(difference);
       }
-      
-      // Adding new row to resulting grid
+
       resultGrid.add(newRow);
     }
 
+    log("[subtractGrids] Result after substraction: $resultGrid");
     return Tetromino.fromExistingGrid(resultGrid);
   }
 
-  /*
-   * Adds two 4x4 grids (Tetromino) element-wise.
-   * 
-   * * @param gridA The first grid.
-   * @param gridB The second grid.
-   * @return New grid of type Tetromino with results of the addition operation of gridA and gridB.
-   * 
-   * GridA
-  [
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4]
-  ]
-   * GridB
-  [
-    [0, 0, 1, 0],
-    [0, 0, 1, 0],
-    [0, 0, 1, 0],
-    [0, 0, 1, 0]
-  ]
-   * resultGrid
-  [
-    [1, 2, 4, 4],
-    [1, 2, 4, 4],
-    [1, 2, 4, 4],
-    [1, 2, 4, 4]
-  ]
-   */
-  static Tetromino addGrids({required Tetromino gridA, required Tetromino gridB}) {
+  /// [addGrids]
+  /// 
+  /// This method adds the two input grids from each other element-wise.
+  /// @param gridA The first grid.
+  /// @param gridB The second grid.
+  /// @return New grid of type Tetromino with results of the addition operation of gridA and gridB.
+  /// 
+  /// Example:
+  /// GridA
+  /// [
+  ///   [1, 2, 3, 4],
+  ///   [1, 2, 3, 4],
+  ///   [1, 2, 3, 4],
+  ///   [1, 2, 3, 4],
+  /// ]
+  ///  * GridB
+  /// [
+  ///   [0, 0, 1, 0],
+  ///   [0, 0, 1, 0],
+  ///   [0, 0, 1, 0],
+  ///   [0, 0, 1, 0],
+  /// ]
+  ///  * resultGrid
+  /// [
+  ///   [1, 2, 4, 4],
+  ///   [1, 2, 4, 4],
+  ///   [1, 2, 4, 4],
+  ///   [1, 2, 4, 4],
+  /// ]
+  static Tetromino addGrids(
+      {required Tetromino gridA, required Tetromino gridB}) {
     List<List<int>> resultGrid = [];
 
-    // Check for same size
     if (gridA.length != gridSize || gridB.length != gridSize) {
       throw ArgumentError('Both grids must have the same size of $gridSize.');
     }
@@ -110,46 +111,41 @@ class GridOperations {
       List<int> rowA = gridA[i];
       List<int> rowB = gridB[i];
 
-      // Check for size
       if (rowA.length != gridSize || rowB.length != gridSize) {
-        throw ArgumentError('All rows must have the same number of rows of $gridSize.');
+        throw ArgumentError(
+            'All rows must have the same number of rows of $gridSize.');
       }
 
       List<int> newRow = [];
-
       // Inner loop: iteration over columns
       for (int j = 0; j < gridSize; j++) {
         int addition = rowA[j] + rowB[j];
         newRow.add(addition);
       }
-      
-      // Adding new row to resulting grid
+
       resultGrid.add(newRow);
     }
 
-    // Return tetromino from existing grid
+    log("[addGrids] Result after addition: $resultGrid");
     return Tetromino.fromExistingGrid(resultGrid);
   }
 
-  /*
-   * Check field if stage is cleared.
-   * After each apply of a tetromino, call this check function.
-   * 
-   * Field must match empty tetromino.
-   * 
-   * Check if given current field after previous application matches
-  [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
-  ]
-  */
+  /// [stageClear]
+  /// 
+  /// This method returns a boolean, if the level state is finished and cleared.
+  /// This action is performed usually after each apply or subtraction.
+  /// 
+  /// It checks if the supplied tetromino matches
+  /// ```dart
+  /// [
+  ///   [0, 0, 0, 0],
+  ///   [0, 0, 0, 0],
+  ///   [0, 0, 0, 0],
+  ///   [0, 0, 0, 0],
+  /// ]
+  /// ```
   static bool stageClear(Tetromino tetromino) {
     Tetromino emptyStage = Tetromino();
-    print("[stageClear] - emptyStage: $emptyStage");
-
-    // First check dimensions of given tetromino
     if (emptyStage.length != tetromino.length ||
         emptyStage[0].length != tetromino[0].length) {
       return false;
@@ -158,25 +154,32 @@ class GridOperations {
     for (int i = 0; i < emptyStage.length; i++) {
       for (int j = 0; j < emptyStage[i].length; j++) {
         if (emptyStage[i][j] != tetromino[i][j]) {
-          // At least on entry is not matching
+          /// At least on entry is not matching
+          log("[stageClear] Levelstate not cleared yet.");
           return false;
         }
       }
     }
-    // All entries match each other
+    log("[stageClear] Levelstate cleared.");
     return true;
   }
 
-  static bool gridsubtractionAllowed({required Tetromino gridA, required Tetromino gridB}) {
-    // Check if subtracting the grids does not result in negative numbers in grid, otherwise operation is not permitted
+  /// [gridsubtractionAllowed]
+  /// 
+  /// This method returns a boolean if it is possible to perform a substraction action.
+  /// It checks if subtracting the grids does not result in negative numbers in grid, otherwise operation is not permitted.
+  static bool gridsubtractionAllowed(
+      {required Tetromino gridA, required Tetromino gridB}) {
     for (int i = 0; i < gridA.length; i++) {
       for (int j = 0; j < gridA[i].length; j++) {
         if (gridA[i][j] - gridB[i][j] < 0) {
+          log("[gridsubtractionAllowed] Action not allowed, would result in negative values.");
           return false;
         }
       }
     }
 
+    log("[gridsubtractionAllowed] Action allowed, resulting values would be non-negative.");
     return true;
   }
 }
