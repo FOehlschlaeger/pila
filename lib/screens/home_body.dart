@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:pila/screens/home_actions.dart';
 import 'package:pila/screens/home_grid.dart';
 import 'package:pila/screens/home_reload.dart';
 
+/// [PilaBody]
+/// 
+/// This class describes the contents of the body of the main screen.
+/// It consists basically of an reload area and the main area containing the grid and buttons.
 class PilaBody extends StatelessWidget {
   const PilaBody({
     super.key,
@@ -24,21 +27,16 @@ class PilaBody extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Upper row: Central area
+          /// Upper row: Reload information area
           ReloadArea(),
     
+          /// Lower row: Area with grid, tetromino tiles and action buttons
           Expanded(
             flex: 10,
             child: Center(
               child: GameGridScreen(),
             )
           ),
-    
-          // Middle row: TetrominoButtons with counters (4 upper, 3 lower)
-          // TetrominoButtons(lvlstate: current_state,),
-    
-          // Lower row: ActionButtons
-          // ActionButtons(),
         ],
       ),
     );

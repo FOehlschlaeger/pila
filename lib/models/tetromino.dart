@@ -1,24 +1,24 @@
-/// General tetromino class.
-/// Each tetromino is a 2d array with columns and rows given from defaults.
 library;
 
 import 'dart:collection';
 
 import '/config/defaults.dart';
 
+/// [Tetromino]
+///
+/// General tetromino class.
+/// Each tetromino is a 2d array with columns and rows given from defaults.
 class Tetromino with ListMixin<List<int>> {
   final List<List<int>> _grid;
 
   Tetromino([int rows = defaultRows, int columns = defaultColumns])
-      : _grid = List.generate(
-          rows, 
-          (i) => List.filled(columns, 0),
-          growable: true
-        );
+      : _grid =
+            List.generate(rows, (i) => List.filled(columns, 0), growable: true);
 
-  // Tetromino.fromExistingGrid(List<List<int>> existingGrid) : _grid = existingGrid;
-  Tetromino.fromExistingGrid(List<List<int>> grid) 
-    : _grid = grid.map((row) => List<int>.from(row, growable: true)).toList(growable: true);
+  Tetromino.fromExistingGrid(List<List<int>> grid)
+      : _grid = grid
+            .map((row) => List<int>.from(row, growable: true))
+            .toList(growable: true);
 
   Tetromino copyWith(List<List<int>> newGrid) {
     return Tetromino.fromExistingGrid(newGrid);
@@ -57,23 +57,27 @@ class Tetromino with ListMixin<List<int>> {
   }
 }
 
-// Tetromino I
-// [
-//   [0, 0, 1, 0],
-//   [0, 0, 1, 0],
-//   [0, 0, 1, 0],
-//   [0, 0, 1, 0]
-// ]
+/// [TetrominoI]
+///
+/// Default:
+/// ```dart
+/// [
+///   [0, 0, 1, 0],
+///   [0, 0, 1, 0],
+///   [0, 0, 1, 0],
+///   [0, 0, 1, 0],
+/// ]
+/// ```
 class TetrominoI extends Tetromino {
-
   TetrominoI._internal([List<List<int>>? grid])
-    : super.fromExistingGrid(grid ?? [
-      [0, 0, 1, 0],
-      [0, 0, 1, 0],
-      [0, 0, 1, 0],
-      [0, 0, 1, 0],
-    ]);
-  
+      : super.fromExistingGrid(grid ??
+            [
+              [0, 0, 1, 0],
+              [0, 0, 1, 0],
+              [0, 0, 1, 0],
+              [0, 0, 1, 0],
+            ]);
+
   factory TetrominoI() {
     return TetrominoI._internal();
   }
@@ -94,22 +98,26 @@ class TetrominoI extends Tetromino {
   }
 }
 
-// Tetromino J
-// [
-//   [0, 0, 1, 0],
-//   [0, 0, 1, 0],
-//   [0, 1, 1, 0],
-//   [0, 0, 0, 0]
-// ]
+/// [TetrominoJ]
+///
+/// Default:
+/// ```dart
+/// [
+///   [0, 0, 1, 0],
+///   [0, 0, 1, 0],
+///   [0, 1, 1, 0],
+///   [0, 0, 0, 0],
+/// ]
+/// ```
 class TetrominoJ extends Tetromino {
-
   TetrominoJ._internal([List<List<int>>? grid])
-    : super.fromExistingGrid(grid ?? [
-      [0, 0, 1, 0],
-      [0, 0, 1, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0],
-    ]);
+      : super.fromExistingGrid(grid ??
+            [
+              [0, 0, 1, 0],
+              [0, 0, 1, 0],
+              [0, 1, 1, 0],
+              [0, 0, 0, 0],
+            ]);
 
   factory TetrominoJ() {
     return TetrominoJ._internal();
@@ -131,22 +139,26 @@ class TetrominoJ extends Tetromino {
   }
 }
 
-// Tetromino L
-// [
-//   [0, 1, 0, 0],
-//   [0, 1, 0, 0],
-//   [0, 1, 1, 0],
-//   [0, 0, 0, 0]
-// ]
+/// [TetrominoL]
+///
+/// Default:
+/// ```dart
+/// [
+///   [0, 1, 0, 0],
+///   [0, 1, 0, 0],
+///   [0, 1, 1, 0],
+///   [0, 0, 0, 0],
+/// ]
+/// ```
 class TetrominoL extends Tetromino {
-
   TetrominoL._internal([List<List<int>>? grid])
-    : super.fromExistingGrid(grid ?? [
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0],
-    ]);
+      : super.fromExistingGrid(grid ??
+            [
+              [0, 1, 0, 0],
+              [0, 1, 0, 0],
+              [0, 1, 1, 0],
+              [0, 0, 0, 0],
+            ]);
 
   factory TetrominoL() {
     return TetrominoL._internal();
@@ -168,22 +180,26 @@ class TetrominoL extends Tetromino {
   }
 }
 
-// Tetromino O
-// [
-//   [0, 0, 0, 0],
-//   [0, 1, 1, 0],
-//   [0, 1, 1, 0],
-//   [0, 0, 0, 0]
-// ]
+/// [TetrominoO]
+///
+/// Default:
+/// ```dart
+/// [
+///   [0, 0, 0, 0],
+///   [0, 1, 1, 0],
+///   [0, 1, 1, 0],
+///   [0, 0, 0, 0],
+/// ]
+/// ```
 class TetrominoO extends Tetromino {
-
   TetrominoO._internal([List<List<int>>? grid])
-    : super.fromExistingGrid(grid ?? [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0],
-    ]);
+      : super.fromExistingGrid(grid ??
+            [
+              [0, 0, 0, 0],
+              [0, 1, 1, 0],
+              [0, 1, 1, 0],
+              [0, 0, 0, 0],
+            ]);
 
   factory TetrominoO() {
     return TetrominoO._internal();
@@ -205,22 +221,26 @@ class TetrominoO extends Tetromino {
   }
 }
 
-// Tetromino S
-// [
-//   [0, 0, 0, 0],
-//   [0, 1, 1, 0],
-//   [1, 1, 0, 0],
-//   [0, 0, 0, 0]
-// ]
+/// [TetrominoS]
+///
+/// Default:
+/// ```dart
+/// [
+///   [0, 0, 0, 0],
+///   [0, 1, 1, 0],
+///   [1, 1, 0, 0],
+///   [0, 0, 0, 0],
+/// ]
+/// ```
 class TetrominoS extends Tetromino {
-  
   TetrominoS._internal([List<List<int>>? grid])
-    : super.fromExistingGrid(grid ?? [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [1, 1, 0, 0],
-      [0, 0, 0, 0],
-    ]);
+      : super.fromExistingGrid(grid ??
+            [
+              [0, 0, 0, 0],
+              [0, 1, 1, 0],
+              [1, 1, 0, 0],
+              [0, 0, 0, 0],
+            ]);
 
   factory TetrominoS() {
     return TetrominoS._internal();
@@ -242,22 +262,26 @@ class TetrominoS extends Tetromino {
   }
 }
 
-// Tetromino T
-// [
-//   [0, 0, 0, 0],
-//   [1, 1, 1, 0],
-//   [0, 1, 0, 0],
-//   [0, 0, 0, 0]
-// ]
+/// [TetrominoT]
+///
+/// Default:
+/// ```dart
+/// [
+///   [0, 0, 0, 0],
+///   [1, 1, 1, 0],
+///   [0, 1, 0, 0],
+///   [0, 0, 0, 0],
+/// ]
+/// ```
 class TetrominoT extends Tetromino {
-
   TetrominoT._internal([List<List<int>>? grid])
-    : super.fromExistingGrid(grid ?? [
-      [0, 0, 0, 0],
-      [1, 1, 1, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0],
-    ]);
+      : super.fromExistingGrid(grid ??
+            [
+              [0, 0, 0, 0],
+              [1, 1, 1, 0],
+              [0, 1, 0, 0],
+              [0, 0, 0, 0],
+            ]);
 
   factory TetrominoT() {
     return TetrominoT._internal();
@@ -279,22 +303,26 @@ class TetrominoT extends Tetromino {
   }
 }
 
-// Tetromino Z
-// [
-//   [0, 0, 0, 0],
-//   [1, 1, 0, 0],
-//   [0, 1, 1, 0],
-//   [0, 0, 0, 0]
-// ]
+/// [TetrominoZ]
+///
+/// Default:
+/// ```dart
+/// [
+///   [0, 0, 0, 0],
+///   [1, 1, 0, 0],
+///   [0, 1, 1, 0],
+///   [0, 0, 0, 0],
+/// ]
+/// ```
 class TetrominoZ extends Tetromino {
-  
   TetrominoZ._internal([List<List<int>>? grid])
-    : super.fromExistingGrid(grid ?? [
-      [0, 0, 0, 0],
-      [1, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0],
-    ]);
+      : super.fromExistingGrid(grid ??
+            [
+              [0, 0, 0, 0],
+              [1, 1, 0, 0],
+              [0, 1, 1, 0],
+              [0, 0, 0, 0],
+            ]);
 
   factory TetrominoZ() {
     return TetrominoZ._internal();

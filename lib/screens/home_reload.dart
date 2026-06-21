@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// [ReloadArea]
+/// 
+/// Containing information about how to create a new levelstate
 class ReloadArea extends StatelessWidget {
   const ReloadArea({
     super.key,
@@ -8,7 +11,7 @@ class ReloadArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 1, // Space on screen
+      flex: 1,
       child: Center(
         child: Container(
           padding: const EdgeInsets.all(5.0),
@@ -26,7 +29,7 @@ class ReloadArea extends StatelessWidget {
             ],
           ),
           child: const Text(
-            'For new level pull down grid',
+            'Pull down the grid for a new level',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12.0,

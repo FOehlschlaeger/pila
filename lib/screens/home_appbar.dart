@@ -2,6 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:pila/screens/home_feedback.dart';
 import 'package:pila/screens/home_help.dart';
 
+/// [PilaAppBar]
+/// 
+/// Appbar area with app icon and dialog icons
+/// - help dialog
+/// - feedback dialog
+/// 
+/// Maybe further options might be added here in the future such as:
+/// - language settings
+/// - light mode / dark mode
+/// - general settings
+/// 
+/// But: To avoid visually button overload maybe a drawer will be needed.
 class PilaAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PilaAppBar({
     super.key,
@@ -10,16 +22,7 @@ class PilaAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // --- Menu ---
-      // leading: IconButton(
-      //   icon: const Icon(Icons.menu, color: Color.fromARGB(255, 80, 80, 80)),
-      //   onPressed: () {
-      //     Scaffold.of(context).openDrawer();
-      //   },
-      //   iconSize: 35,
-      // ),
-
-      // --- App Icon ---
+      /// App Icon
       automaticallyImplyLeading: false,
       title: Row(
         children: [
@@ -30,21 +33,20 @@ class PilaAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
 
-      // --- Icon Dialogs ---
+      /// Icon Dialogs
       centerTitle: true,
       actions: [
         HomeHelpDialog(),
         HomeFeedbackDialog(),
       ],
 
-      // --- AppBar design ---
+      /// AppBar design
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 148, 148, 148),
               Color.fromARGB(255, 255, 255, 255),
-              // Color.fromARGB(255, 148, 148, 148)
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
