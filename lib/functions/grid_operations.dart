@@ -3,18 +3,18 @@ import 'package:pila/models/tetromino.dart';
 import 'package:pila/utils/logger.dart';
 
 /// [GridOperations]
-/// 
+///
 /// This class defines operations performed on grids in general.
 class GridOperations {
   static final int gridSize = gridLength;
 
   /// [subtractGrids]
-  /// 
+  ///
   /// This method substracts the two input grids from each other element-wise.
   /// @param gridA The first grid.
   /// @param gridB The second grid.
   /// @return New grid of type Tetromino with results of the subtraction operation of gridA and gridB.
-  /// 
+  ///
   /// Example:
   /// GridA
   /// [
@@ -70,12 +70,12 @@ class GridOperations {
   }
 
   /// [addGrids]
-  /// 
+  ///
   /// This method adds the two input grids from each other element-wise.
   /// @param gridA The first grid.
   /// @param gridB The second grid.
   /// @return New grid of type Tetromino with results of the addition operation of gridA and gridB.
-  /// 
+  ///
   /// Example:
   /// GridA
   /// [
@@ -130,11 +130,12 @@ class GridOperations {
     return Tetromino.fromExistingGrid(resultGrid);
   }
 
-  /// [stageClear]
-  /// 
-  /// This method returns a boolean, if the level state is finished and cleared.
+  /// [tetrominoEmpty]
+  ///
+  /// This method returns a boolean, if the given tetromino is empty.
   /// This action is performed usually after each apply or subtraction.
-  /// 
+  /// This is used for example, to check if the level is finished.
+  ///
   /// It checks if the supplied tetromino matches
   /// ```dart
   /// [
@@ -144,7 +145,7 @@ class GridOperations {
   ///   [0, 0, 0, 0],
   /// ]
   /// ```
-  static bool stageClear(Tetromino tetromino) {
+  static bool tetrominoEmpty(Tetromino tetromino) {
     Tetromino emptyStage = Tetromino();
     if (emptyStage.length != tetromino.length ||
         emptyStage[0].length != tetromino[0].length) {
@@ -155,17 +156,17 @@ class GridOperations {
       for (int j = 0; j < emptyStage[i].length; j++) {
         if (emptyStage[i][j] != tetromino[i][j]) {
           /// At least on entry is not matching
-          log("[stageClear] Levelstate not cleared yet.");
+          //log("[tetrominoEmpty] Passed tetromino not empty.");
           return false;
         }
       }
     }
-    log("[stageClear] Levelstate cleared.");
+    //log("[tetrominoEmpty] Passed tetromino is empty.");
     return true;
   }
 
   /// [gridsubtractionAllowed]
-  /// 
+  ///
   /// This method returns a boolean if it is possible to perform a substraction action.
   /// It checks if subtracting the grids does not result in negative numbers in grid, otherwise operation is not permitted.
   static bool gridsubtractionAllowed(

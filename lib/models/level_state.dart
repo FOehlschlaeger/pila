@@ -118,7 +118,7 @@ class LevelState extends MapBase {
           gridA: currentState, gridB: selectedTile);
 
       /// Update tetromino counter after application if not already zero
-      if (inputState['counter_${selectedTile.runtimeType}']['current'] > 0) {
+      if (inputState['counter_${selectedTile.runtimeType}'] != null && inputState['counter_${selectedTile.runtimeType}']['current'] > 0) {
         inputState['counter_${selectedTile.runtimeType}']['current'] -= 1;
       }
 
