@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:pila/config/colors.dart';
 import 'package:pila/config/defaults.dart';
 import 'package:pila/functions/grid_operations.dart';
-import 'package:pila/functions/tetromino_operations.dart' as tetrominoOperations;
+import 'package:pila/functions/tetromino_operations.dart'
+    as tetrominoOperations;
 import 'package:pila/models/level_state.dart';
 import 'package:pila/models/tetromino.dart';
 
 /// [GameGridScreen]
-/// 
+///
 /// This class describes the main area in the UI with the grid, the tetromino tiles and the action buttons.
 class GameGridScreen extends StatefulWidget {
   const GameGridScreen({super.key});
@@ -18,7 +19,7 @@ class GameGridScreen extends StatefulWidget {
 }
 
 /// [_GameGridScreenState]
-/// 
+///
 /// Manages the state of the grid during the game.
 /// Provides the UI to the user including messages via Snackbars at the bottom screen.
 class _GameGridScreenState extends State<GameGridScreen> {
@@ -31,7 +32,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   Offset? _lastTriggerPos;
 
   /// [_handleDragUpdate]
-  /// 
+  ///
   /// Handler for shift-motion (horizontal / vertival) of selected tetromino in the grid.
   void _handleDragUpdate(Offset currentPos) {
     if (_lastTriggerPos == null) {
@@ -50,6 +51,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
       } else {
         _gestureShiftLeft(currentState);
       }
+
       /// Important: Update the point of reference
       _lastTriggerPos = currentPos;
     } else if (dy.abs() >= threshold) {
@@ -58,6 +60,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
       } else {
         _gestureShiftUp(currentState);
       }
+
       /// Important: Update the point of reference
       _lastTriggerPos = currentPos;
     }
@@ -71,13 +74,14 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [createNewState]
-  /// 
+  ///
   /// Initialize new level
   Future createNewState() async {
     setState(() {
       currentState = currentState.initLevelState();
       levelStateHistory = [];
     });
+
     /// Show context to user
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -87,13 +91,14 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_resetGame]
-  /// 
+  ///
   /// Helper method to reset the game
   void _resetGame(LevelState lvlstate, List<LevelState> levelStateHistory) {
     setState(() {
       currentState = LevelState.resetState(lvlstate);
       levelStateHistory = [];
     });
+
     /// Show context to user
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -103,7 +108,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_undoLastApply]
-  /// 
+  ///
   /// Method to revert the last apply action and revert the state of the grid and tetrominos
   /// Also checks if reverting is possible
   void _undoLastApply(LevelState lvlstate, List<LevelState> levelStateHistory) {
@@ -111,7 +116,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
       if (levelStateHistory.isNotEmpty) {
         currentState = levelStateHistory.last;
         levelStateHistory.removeLast();
-        
+
         /// Show context to user
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -130,7 +135,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_applyTetromino]
-  /// 
+  ///
   /// Method to actually apply the selected tile to the current grid
   /// After each apply action the state is checked if level is finished
   /// Also the history of level states is used to enable a simple revert action
@@ -155,13 +160,14 @@ class _GameGridScreenState extends State<GameGridScreen> {
       }
 
       /// check if state is clear after apply operation
-      if (GridOperations.stageClear(lvlstate['current_state'])) {
+      if (GridOperations.tetrominoEmpty(lvlstate['current_state'])) {
         /// Show context to user
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               duration: Duration(milliseconds: 500),
               content: Text('Level state cleared! ')),
         );
+
         /// Show a dialog to the user to inform about finished game and to continue with new initialized level
         showDialog(
             context: context,
@@ -212,7 +218,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_rotateTetromino]
-  /// 
+  ///
   /// Calling operation rotate and pass current levelstate
   void _rotateTetromino(LevelState lvlstate) {
     setState(() {
@@ -222,7 +228,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_gestureShiftUp]
-  /// 
+  ///
   /// Calling operation shiftUp and pass current levelstate
   void _gestureShiftUp(LevelState lvlstate) {
     setState(() {
@@ -232,7 +238,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_gestureShiftDown]
-  /// 
+  ///
   /// Calling operation shiftDown and pass current levelstate
   void _gestureShiftDown(LevelState lvlstate) {
     setState(() {
@@ -242,7 +248,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_gestureShiftLeft]
-  /// 
+  ///
   /// Calling operation shiftLeft and pass current levelstate
   void _gestureShiftLeft(LevelState lvlstate) {
     setState(() {
@@ -252,7 +258,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_gestureShiftRight]
-  /// 
+  ///
   /// Calling operation shiftRight and pass current levelstate
   void _gestureShiftRight(LevelState lvlstate) {
     setState(() {
@@ -306,6 +312,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
                           crossAxisCount: _gridRows,
                           // distance between columns
                           crossAxisSpacing: 8.0,
+
                           /// distance between rows
                           mainAxisSpacing: 8.0,
                         ),
@@ -317,13 +324,11 @@ class _GameGridScreenState extends State<GameGridScreen> {
                               [indexRow][indexColumn];
 
                           return GestureDetector(
-                            onDoubleTap: () =>
-                                _applyTetromino(
-                                    currentState, levelStateHistory),
+                            onDoubleTap: () => _applyTetromino(
+                                currentState, levelStateHistory),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: getNumberColors(
-                                    currentIndex),
+                                color: getNumberColors(currentIndex),
                                 border: Border.all(
                                   color: currentState["selected_tile"][indexRow]
                                               [indexColumn] ==
@@ -359,6 +364,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
                   ),
                 ),
               ),
+
               /// Area of TetrominoButtons
               Expanded(
                 flex: 4,
@@ -418,15 +424,15 @@ class _GameGridScreenState extends State<GameGridScreen> {
                       Column(
                         children: [
                           IconButton(
-                              icon: const Icon(Icons.fast_rewind),
-                              tooltip: "Revert last apply, hold to reset",
-                              onPressed: (() => _undoLastApply(
-                                  currentState, levelStateHistory)),
-                              onLongPress: (() =>
-                                  _resetGame(currentState, levelStateHistory)),
-                              iconSize: 60,
-                              color: iconColor,
-                              highlightColor: iconColorHighlight,
+                            icon: const Icon(Icons.fast_rewind),
+                            tooltip: "Revert last apply, hold to reset",
+                            onPressed: (() => _undoLastApply(
+                                currentState, levelStateHistory)),
+                            onLongPress: (() =>
+                                _resetGame(currentState, levelStateHistory)),
+                            iconSize: 60,
+                            color: iconColor,
+                            highlightColor: iconColorHighlight,
                           ),
                           Text(
                             'Revert',
@@ -498,16 +504,14 @@ class _GameGridScreenState extends State<GameGridScreen> {
   }
 
   /// [_buildImageWithNumber]
-  /// 
+  ///
   /// Helper widget for the tetromino buttons including the counter in front
   Widget _buildImageWithNumber(
       String imagePath, LevelState lvlstate, Tetromino selectedTetromino) {
     final String key = 'counter_${selectedTetromino.runtimeType}';
     final int number = lvlstate[key]?['current'] ?? 0;
 
-    bool isSelected = false;
-    Color selectionColor = Colors.transparent;
-    bool hasZeroCounter = lvlstate[key]['initial'] == 0 || number == 0;
+    final bool hasZeroCounter = lvlstate[key]['initial'] == 0 || number == 0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -517,27 +521,27 @@ class _GameGridScreenState extends State<GameGridScreen> {
           if (!hasZeroCounter) {
             setState(() {
               lvlstate['selected_tile'] = selectedTetromino;
-              isSelected = lvlstate['selected_tile'] == selectedTetromino;
-              selectionColor = Color.fromARGB(255, 0, 255, 13);
+            });
+          } else {
+            setState(() {
+              lvlstate['selected_tile'] = Tetromino();
             });
           }
         },
         child: Container(
           decoration: BoxDecoration(
             color: hasZeroCounter
-                ? const Color.fromARGB(6, 150, 150,
-                    150)
+                ? const Color.fromARGB(6, 150, 150, 150)
                 : borderColorCurrentSelection.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? selectionColor : Colors.transparent,
+              color: Colors.transparent,
               width: 2,
             ),
           ),
           padding: const EdgeInsets.all(4),
           child: Row(
-            mainAxisSize: MainAxisSize
-                .min,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 "${number}x",
