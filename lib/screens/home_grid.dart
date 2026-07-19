@@ -377,25 +377,39 @@ class _GameGridScreenState extends State<GameGridScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildImageWithNumber('assets/images/tetromino-I.png',
-                              currentState, TetrominoI()),
-                          _buildImageWithNumber('assets/images/tetromino-O.png',
-                              currentState, TetrominoO()),
-                          _buildImageWithNumber('assets/images/tetromino-J.png',
-                              currentState, TetrominoJ()),
-                          _buildImageWithNumber('assets/images/tetromino-L.png',
-                              currentState, TetrominoL()),
+                          _buildImageWithNumber(
+                              'assets/images/tetrominos/tetromino-I.png',
+                              currentState,
+                              TetrominoI()),
+                          _buildImageWithNumber(
+                              'assets/images/tetrominos/tetromino-O.png',
+                              currentState,
+                              TetrominoO()),
+                          _buildImageWithNumber(
+                              'assets/images/tetrominos/tetromino-J.png',
+                              currentState,
+                              TetrominoJ()),
+                          _buildImageWithNumber(
+                              'assets/images/tetrominos/tetromino-L.png',
+                              currentState,
+                              TetrominoL()),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildImageWithNumber('assets/images/tetromino-S.png',
-                              currentState, TetrominoS()),
-                          _buildImageWithNumber('assets/images/tetromino-Z.png',
-                              currentState, TetrominoZ()),
-                          _buildImageWithNumber('assets/images/tetromino-T.png',
-                              currentState, TetrominoT()),
+                          _buildImageWithNumber(
+                              'assets/images/tetrominos/tetromino-S.png',
+                              currentState,
+                              TetrominoS()),
+                          _buildImageWithNumber(
+                              'assets/images/tetrominos/tetromino-Z.png',
+                              currentState,
+                              TetrominoZ()),
+                          _buildImageWithNumber(
+                              'assets/images/tetrominos/tetromino-T.png',
+                              currentState,
+                              TetrominoT()),
                         ],
                       ),
                     ],
