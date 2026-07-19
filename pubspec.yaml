@@ -34,11 +34,13 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
+    - assets/images/tetrominos/
+    - assets/images/icon/
+    - assets/images/docs/
 
 flutter_launcher_icons:
   android: true  
   ios: true  
-  image_path: "assets/images/pila-icon_minimal_orange_2.png"
-  adaptive_icon_background: "assets/images/pila-icon_minimal_orange_2_background.png"
-  adaptive_icon_foreground: "assets/images/pila-icon_minimal_orange_2_foreground.png"
+  image_path: "assets/images/icon/pila-icon_minimal_orange_2.png"
+  adaptive_icon_background: "assets/images/icon/pila-icon_minimal_orange_2_background.png"
+  adaptive_icon_foreground: "assets/images/icon/pila-icon_minimal_orange_2_foreground.png"
