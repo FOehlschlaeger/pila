@@ -568,7 +568,7 @@ class _GameGridScreenState extends State<GameGridScreen> {
               const SizedBox(width: 5),
               Image.asset(
                 imagePath,
-                width: 50,
+                width: 45,
                 height: 50,
                 fit: BoxFit.contain,
               ),

@@ -44,5 +44,5 @@ app.*.map.json
 /android/app/release
 
 # Assets
-/assets/images/*.svg
+/assets/images/tetrominos/*.svg
 /assets/images/PILA/
