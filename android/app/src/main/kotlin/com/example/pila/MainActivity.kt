@@ -1,4 +1,4 @@
-package com.example.pila
+package com.foehlschlaeger.pila
 
 import io.flutter.embedding.android.FlutterActivity
 
